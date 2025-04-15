@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonaksh Tholia - Portfolio</title>
+    <style>
+        /* Import Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Work+Sans:wght@300;400;600&display=swap');
+
+        /* Basic Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Body Styling */
+        body { background-color: #000; color: #fff; overflow: hidden; height: 100vh; width: 100vw; position: relative; font-family: 'Work Sans', sans-serif; cursor: none; }
+        .container { position: relative; height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+        /* Fade-in Animation for Page Load */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        body {
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+        
+        /* Staggered Fade-in for Elements */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+        .delay-6 { animation-delay: 1.2s; }
+
+        /* Decorative Elements */
+        .gradient-box { position: absolute; top: 5%; left: 15%; width: 150px; height: 150px; background: linear-gradient(to bottom, #00ff66, #003311); z-index: 1; transition: transform 0.5s ease; border-radius: 10px; }
+        .orange-box { position: absolute; top: 15%; right: 15%; width: 80px; height: 150px; background: linear-gradient(to bottom, #ff6600, #993300); z-index: 1; border-radius: 10px; }
+        .moon { position: absolute; bottom: 15%; left: 10%; width: 100px; height: 100px; border-radius: 50%; background-color: #ccc; background-image: url('https://placehold.co/100x100/cccccc/333333'); box-shadow: inset -20px 10px 20px rgba(0, 0, 0, 0.4); z-index: 1; }
+        .cube { position: absolute; bottom: 10%; left: 10%; width: 100px; height: 100px; z-index: 1; transform-style: preserve-3d; perspective: 1000px; animation: rotate 10s infinite linear; }
+        .cube-face { position: absolute; width: 100px; height: 100px; border: 1px solid white; background-color: rgba(255, 255, 255, 0.05); }
+        .front  { transform: translateZ(50px); } .back { transform: translateZ(-50px) rotateY(180deg); } .left { transform: rotateY(-90deg) translateZ(50px); } .right { transform: rotateY(90deg) translateZ(50px); } .top { transform: rotateX(90deg) translateZ(50px); } .bottom { transform: rotateX(-90deg) translateZ(50px); }
+        .cloud { position: absolute; width: 120px; height: 60px; z-index: 1; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)); animation: float 6s infinite ease-in-out; }
+        .cloud1 { top: 15%; left: 35%; } .cloud2 { bottom: 15%; right: 15%; }
+        .scribble { position: absolute; z-index: 1; filter: drop-shadow(0 0 3px currentColor); }
+        .scribble1 { bottom: 30%; left: 30%; stroke: #ff4500; stroke-width: 3; } .scribble2 { bottom: 20%; right: 20%; stroke: white; stroke-width: 2; }
+        .white-dot { position: absolute; width: 20px; height: 20px; border-radius: 50%; background-color: white; right: 25%; top: 30%; z-index: 1; box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5); animation: pulse 3s infinite ease-in-out; }
+
+        /* Content Styling */
+        .content-container { position: relative; z-index: 10; text-align: center; padding: 2rem; }
+        .name { font-family: 'Oswald', sans-serif; font-size: 6rem; font-weight: 700; margin-bottom: 1rem; position: relative; text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); letter-spacing: -2px; line-height: 0.9; text-transform: uppercase; transition: text-shadow 0.3s ease; }
+        .name:hover { text-shadow: 0 0 15px rgba(0, 255, 102, 0.8); }
+        .sonaksh { font-style: normal; transform: skewX(-5deg); display: inline-block; letter-spacing: -3px; }
+        .title-container { display: flex; align-items: center; justify-content: center; margin-top: 2rem; position: relative; }
+        .title { font-family: 'Work Sans', sans-serif; font-size: 2.5rem; margin: 0 0.5rem; letter-spacing: -1px; }
+        .artist { font-weight: 600; text-transform: uppercase; } .creator { font-weight: 300; } .designer { font-weight: 600; font-style: italic; font-size: 3.5rem; }
+
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes rotate { 0% { transform: rotateY(0deg) rotateX(0deg); } 100% { transform: rotateY(360deg) rotateX(360deg); } }
+        @keyframes draw { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5); } 50% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 15px 8px rgba(255, 255, 255, 0.7); } }
+        @keyframes flapWings { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
+
+        /* Interactive Elements */
+        .interactive { cursor: none; transition: transform 0.3s ease, filter 0.3s ease; }
+        .interactive:hover { transform: scale(1.1); filter: brightness(1.2); }
+
+        /* Navigation Menu */
+        .nav-menu { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 20; font-family: 'Work Sans', sans-serif; font-weight: 300; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-item { position: relative; padding: 10px 20px; background-color: transparent; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 30px; cursor: none; transition: all 0.3s ease; user-select: none; color: #fff; text-decoration: none; }
+        .nav-item:hover { background-color: rgba(255, 255, 255, 0.1); transform: translateY(-5px); }
+        .submenu { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); background-color: rgba(30, 30, 30, 0.9); border-radius: 10px; padding: 10px 0; width: max-content; min-width: 180px; z-index: 21; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px); }
+        .nav-item:hover > .submenu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-5px); }
+        .submenu-item, .submenu-item a { display: block; padding: 8px 20px; color: #eee; font-size: 0.9rem; text-transform: none; letter-spacing: 0.5px; cursor: none; transition: background-color 0.2s ease, color 0.2s ease; white-space: nowrap; text-decoration: none; }
+        .submenu-item:hover, .submenu-item a:hover { background-color: rgba(255, 255, 255, 0.15); color: #fff; }
+
+        /* Initial Page Load Transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+            transform-origin: bottom;
+            animation: pageReveal 1.5s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+        }
+
+        @keyframes pageReveal {
+            0% {
+                transform: scaleY(1);
+            }
+            100% {
+                transform: scaleY(0);
+            }
+        }
+
+        /* Custom Butterfly Cursor Styles */
+        .butterfly-cursor { position: fixed; width: 40px; height: 40px; pointer-events: none; z-index: 9999; transform-origin: center; transition: transform 0.1s ease; opacity: 0; animation: cursorFadeIn 2s forwards 1s; }
+        
+        @keyframes cursorFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .butterfly-body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 16px; background-color: white; border-radius: 50%; z-index: 2; transition: background-color 0.3s ease; }
+        .butterfly-wing { position: absolute; width: 20px; height: 24px; background-color: white; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; transition: all 0.3s ease; animation: flapWings 0.8s infinite ease-in-out; }
+        .butterfly-wing-left { left: 0; transform-origin: right center; transform: rotate(-20deg); } .butterfly-wing-right { right: 0; transform-origin: left center; transform: rotate(20deg); } .butterfly-wing-left-back { left: 5px; top: 10px; transform: rotate(-40deg); width: 15px; height: 20px; opacity: 0.7; } .butterfly-wing-right-back { right: 5px; top: 10px; transform: rotate(40deg); width: 15px; height: 20px; opacity: 0.7; }
+        .invert-cursor .butterfly-body, .invert-cursor .butterfly-wing { background-color: black; mix-blend-mode: difference; } .name-hover .butterfly-body, .name-hover .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; box-shadow: 0 0 10px #00ff66; } .green-cursor .butterfly-body, .green-cursor .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; } .orange-cursor .butterfly-body, .orange-cursor .butterfly-wing { background-color: #ff6600; mix-blend-mode: normal; }
+    </style>
+</head>
+<body>
+    <!-- Page transition overlay -->
+    <div class="page-transition"></div>
+
+    <div class="container">
+        <div class="gradient-box interactive fade-in delay-3"></div>
+        <div class="orange-box interactive fade-in delay-4"></div>
+
+        <div class="content-container fade-in delay-1">
+            <h1 class="name interactive"><span class="sonaksh">SONAKSH</span> <br>THOLIA</h1>
+            <div class="title-container fade-in delay-2">
+                <span class="title artist interactive">ARTIST</span>
+                <span class="title creator interactive">creator,</span>
+                <span class="title designer interactive">designer</span>
+            </div>
+        </div>
+
+        <div class="moon interactive fade-in delay-3"></div>
+        <div class="cube interactive fade-in delay-4">
+            <div class="cube-face front"></div> <div class="cube-face back"></div>
+            <div class="cube-face left"></div> <div class="cube-face right"></div>
+            <div class="cube-face top"></div> <div class="cube-face bottom"></div>
+        </div>
+        <svg class="cloud cloud1 interactive fade-in delay-5" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
+        <svg class="cloud cloud2 interactive fade-in delay-5" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
+        <svg class="scribble scribble1 interactive fade-in delay-6" width="200" height="100" viewBox="0 0 200 100"><path d="M10,50 C30,20 50,80 70,30 C90,70 110,20 130,60 C150,30 170,70 190,40" fill="none" stroke="#ff4500" stroke-width="3" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="2s" begin="1.2s" fill="freeze" /></path></svg>
+        <svg class="scribble scribble2 interactive fade-in delay-6" width="300" height="100" viewBox="0 0 300 100"><path d="M10,50 C50,20 100,80 150,30 C200,70 250,20 290,60" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="2s" begin="1.5s" fill="freeze" /></path></svg>
+        <div class="white-dot interactive fade-in delay-5"></div>
+
+        <div class="nav-menu fade-in delay-6">
+            <div class="nav-item">
+                Work
+                <div class="submenu">
+                    <a href="graphics.html" class="submenu-item interactive">Graphic Exploration</a>
+                    <a href="apparel.html" class="submenu-item interactive">Apparel Design</a>
+                    <a href="misc.html" class="submenu-item interactive">Miscellaneous Work</a>
+                </div>
+            </div>
+            <a href="about.html" class="nav-item">About</a>
+        </div>
+    </div>
+
+    <div class="butterfly-cursor">
+        <div class="butterfly-wing butterfly-wing-left"></div>
+        <div class="butterfly-wing butterfly-wing-right"></div>
+        <div class="butterfly-wing butterfly-wing-left-back"></div>
+        <div class="butterfly-wing butterfly-wing-right-back"></div>
+        <div class="butterfly-body"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial page load animation
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    el.style.opacity = "1";
+                    el.style.transform = "translateY(0)";
+                });
+            }, 500);
+
+            // --- Butterfly Cursor Logic ---
+            const butterflyCursor = document.querySelector('.butterfly-cursor');
+            const butterflyWings = document.querySelectorAll('.butterfly-wing');
+            let lastMouseX = 0;
+            let lastMouseY = 0;
+            let angle = 90;
+            
+            function updateButterflyPosition(e) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                requestAnimationFrame(() => {
+                    butterflyCursor.style.left = `${mouseX - butterflyCursor.offsetWidth / 2}px`;
+                    butterflyCursor.style.top = `${mouseY - butterflyCursor.offsetHeight / 2}px`;
+                    const dx = mouseX - lastMouseX;
+                    const dy = mouseY - lastMouseY;
+                    if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                        angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                    }
+                    butterflyCursor.style.transform = `rotate(${angle}deg)`;
+                    lastMouseX = mouseX;
+                    lastMouseY = mouseY;
+                });
+                const elementUnderCursor = document.elementFromPoint(mouseX, mouseY);
+                butterflyCursor.classList.remove('invert-cursor', 'name-hover', 'green-cursor', 'orange-cursor');
+                if (elementUnderCursor) {
+                    if (elementUnderCursor.closest('.name')) { butterflyCursor.classList.add('name-hover'); }
+                    else if (elementUnderCursor.closest('.gradient-box')) { butterflyCursor.classList.add('green-cursor'); }
+                    else if (elementUnderCursor.closest('.orange-box')) { butterflyCursor.classList.add('orange-cursor'); }
+                    else if (elementUnderCursor.closest('.interactive') || elementUnderCursor.closest('.nav-item') || elementUnderCursor.closest('.submenu-item') || elementUnderCursor.closest('a.submenu-item') || elementUnderCursor.closest('a.nav-item')) { butterflyCursor.classList.add('invert-cursor'); }
+                }
+            }
+            document.addEventListener('mousemove', updateButterflyPosition);
+
+            // --- Butterfly Wings Flapping Speed ---
+            let isMoving = false;
+            let moveTimeout;
+            document.addEventListener('mousemove', function() {
+                isMoving = true;
+                butterflyWings.forEach(wing => { wing.style.animationDuration = '0.3s'; });
+                clearTimeout(moveTimeout);
+                moveTimeout = setTimeout(() => {
+                    isMoving = false;
+                    butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
+                }, 150);
+            });
+
+            // --- Interactive Element Enhancements ---
+            document.querySelectorAll('.submenu-item, a.submenu-item').forEach(item => {
+                item.classList.add('interactive');
+                item.style.transition = 'background-color 0.2s ease, color 0.2s ease';
+                item.addEventListener('mouseenter', () => item.style.transform = 'none');
+            });
+
+            const interactiveElements = document.querySelectorAll('.interactive');
+            interactiveElements.forEach(element => {
+                if (element.classList.contains('cloud')) {
+                    const randomDuration = 4 + Math.random() * 4;
+                    element.style.animationDuration = `${randomDuration}s`;
+                }
+                if (!element.closest('.nav-menu')) {
+                    element.addEventListener('click', function() {
+                        if (element.classList.contains('container') || element.tagName === 'BODY') return;
+                        this.style.transform = 'scale(1.2) rotate(5deg)';
+                        setTimeout(() => {
+                            if (element.matches(':hover') && !element.closest('.nav-menu')) {
+                                element.style.transform = 'scale(1.1)';
+                            } else {
+                                element.style.transform = '';
+                            }
+                        }, 300);
+                    });
+                }
+            });
+
+            // --- Navigation Item Click Highlight ---
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                if (!item.querySelector('.submenu')) {
+                    item.addEventListener('click', function(e) {
+                        navItems.forEach(ni => ni.style.borderColor = 'rgba(255, 255, 255, 0.3)');
+                        this.style.borderColor = '#00ff66';
+                        console.log(`Navigating to or interacting with: ${this.textContent.trim()}`);
+                    });
+                }
+            });
+
+            // --- Parallax-like Mouse Movement Effect ---
+            const parallaxElements = document.querySelectorAll('.cloud, .moon, .gradient-box, .orange-box, .white-dot, .cube, .scribble, .name, .title-container, .nav-menu');
+            document.addEventListener('mousemove', function(e) {
+                const xPos = (e.clientX / window.innerWidth - 0.5) * 2;
+                const yPos = (e.clientY / window.innerHeight - 0.5) * 2;
+                parallaxElements.forEach(el => {
+                    let factor = 0.5; let intensity = 10;
+                    if (el.classList.contains('cloud') || el.classList.contains('scribble')) { factor = 0.7; intensity = 12; }
+                    if (el.classList.contains('moon') || el.classList.contains('white-dot')) { factor = 0.3; intensity = 8; }
+                    if (el.classList.contains('cube')) { factor = 0.4; intensity = 9; }
+                    if (el.classList.contains('gradient-box') || el.classList.contains('orange-box')) { factor = 0.6; intensity = 11; }
+                    if (el.classList.contains('name')) { factor = 0.1; intensity = 5; }
+                    if (el.classList.contains('title-container')) { factor = 0.08; intensity = 4; }
+                    if (el.classList.contains('nav-menu')) { factor = 0.05; intensity = 3; }
+                    const moveX = -xPos * intensity * factor;
+                    const moveY = -yPos * intensity * factor;
+                    let finalTransform = `translate(${moveX}px, ${moveY}px)`;
+                    if (el.classList.contains('nav-menu')) { finalTransform += ' translateX(-50%)';}
+                    if (el.classList.contains('fade-in')) {
+                        // Don't override the fade-in animation until it's complete
+                        if (getComputedStyle(el).opacity === "1") {
+                            el.style.transform = finalTransform;
+                        }
+                    } else {
+                        el.style.transform = finalTransform;
+                    }
+                });
+            });
+
+            // --- Periodic Animation Reset (Scribbles) ---
+            const scribbleAnims = document.querySelectorAll('.scribble path animate');
+            if (scribbleAnims.length > 0) { 
+                setInterval(() => { 
+                    scribbleAnims.forEach(anim => { 
+                        try { 
+                            anim.beginElement(); 
+                        } catch (error) { 
+                            console.warn("Could not restart SVG animation:", error); 
+                        } 
+                    }); 
+                }, 7000); 
+            }
+        });
+    </script>
+</body>
+</html>

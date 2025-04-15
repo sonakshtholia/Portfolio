@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miscellaneous Work - Sonaksh Tholia</title>
+    <style>
+        /* Import Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Work+Sans:wght@300;400;600&display=swap');
+
+        /* Basic Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Body Styling */
+        body { background-color: #000; color: #fff; overflow-x: hidden; overflow-y: auto; min-height: 100vh; width: 100vw; position: relative; font-family: 'Work Sans', sans-serif; cursor: none; padding-top: 100px; padding-bottom: 80px; }
+        body.modal-open { overflow: hidden; }
+
+        /* Main Container */
+        .page-container { padding: 2rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; transition: filter 0.4s ease, opacity 0.4s ease; }
+        .page-content-dimmed { filter: brightness(0.3) grayscale(60%); opacity: 0.5; pointer-events: none; }
+
+        /* Page Title Styling */
+        .page-title { font-family: 'Oswald', sans-serif; font-size: 4rem; font-weight: 500; text-align: center; margin-bottom: 4rem; text-transform: uppercase; letter-spacing: -1px; color: #eee; position: relative; z-index: 5; }
+
+        /* Back Link Styling */
+        .back-link { position: fixed; top: 20px; left: 20px; z-index: 1001; font-family: 'Work Sans', sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 1px; color: #fff; text-decoration: none; padding: 8px 15px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; background-color: rgba(0, 0, 0, 0.5); transition: all 0.3s ease; cursor: none; }
+        .back-link:hover { background-color: rgba(255, 255, 255, 0.1); border-color: #fff; transform: scale(1.05); }
+
+        /* Project Item Layout */
+        .project-list { display: flex; flex-direction: column; gap: 6rem; }
+        .project-item { display: flex; gap: 3rem; align-items: center; position: relative; z-index: 5; }
+        .project-item:nth-child(even) { flex-direction: row-reverse; }
+        .project-image-area { flex: 1 1 55%; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); background-color: rgba(255, 255, 255, 0.02); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+        .project-image-area:hover { transform: scale(1.03); box-shadow: 0 8px 20px rgba(0, 255, 102, 0.15); border-color: rgba(0, 255, 102, 0.5); }
+        .project-image-area img { display: block; width: 100%; height: auto; background-color: #111; }
+        .project-text-area { flex: 1 1 45%; }
+        .project-title { font-family: 'Oswald', sans-serif; font-size: 2.2rem; font-weight: 500; margin-bottom: 1rem; color: #eee; }
+        .project-category { font-family: 'Work Sans', sans-serif; font-size: 0.9rem; font-weight: 600; color: #00ff66; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5rem; display: inline-block; }
+        .project-writeup { font-weight: 300; line-height: 1.7; color: #ccc; font-size: 0.95rem; }
+
+        @media (max-width: 768px) { /* Responsive stacking */
+            .project-item, .project-item:nth-child(even) { flex-direction: column; gap: 2rem; }
+            .project-image-area, .project-text-area { flex-basis: auto; width: 100%; }
+            .project-text-area { text-align: left; }
+        }
+
+        /* Style for grayscale effect (applied by JS) */
+        .grayscale-inactive { filter: grayscale(100%); opacity: 0.4; }
+
+        /* --- MODIFIED: Lightbox Modal Styles --- */
+        .lightbox-modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            /* Use flex for centering gallery container */
+            justify-content: center; align-items: center;
+            cursor: pointer; /* Close on background click */
+        }
+        /* Container for the gallery inside the modal */
+        .lightbox-gallery-container {
+            position: relative; /* Context for buttons */
+            width: 90%; /* Max width */
+            height: 90%; /* Max height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default; /* Default cursor over gallery area */
+        }
+        /* The scrollable gallery itself */
+        .lightbox-gallery {
+            display: flex; /* Arrange images horizontally */
+            overflow-x: auto; /* Enable horizontal scroll */
+            overflow-y: hidden; /* Hide vertical scroll */
+            gap: 15px; /* Space between images */
+            align-items: center; /* Center images vertically */
+            width: 100%;
+            height: 100%;
+            padding: 0 50px; /* Padding to avoid overlap with buttons */
+            scroll-behavior: smooth; /* Smooth scrolling with buttons */
+            /* Hide scrollbar visually (optional) */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        .lightbox-gallery::-webkit-scrollbar { display: none; /* Chrome/Safari/Opera */ }
+
+        .lightbox-gallery img {
+            display: block;
+            max-width: none; /* Allow image to exceed container width for scroll */
+            max-height: 100%; /* Limit height to gallery container */
+            height: 100%; /* Try to fill height */
+            width: auto; /* Calculate width based on height */
+            object-fit: contain; /* Ensure whole image is visible */
+            flex-shrink: 0; /* Prevent images from shrinking */
+            animation: zoomIn 0.3s ease; /* Reuse zoom animation */
+        }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0;} to { transform: scale(1); opacity: 1;} }
+
+        /* Navigation Buttons */
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(50, 50, 50, 0.6);
+            color: white;
+            border: none;
+            font-size: 2rem;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1003; /* Above gallery */
+            transition: background-color 0.2s ease;
+            user-select: none; /* Prevent text selection */
+        }
+        .lightbox-nav:hover { background-color: rgba(80, 80, 80, 0.8); }
+        .lightbox-prev { left: 10px; }
+        .lightbox-next { right: 10px; }
+
+        /* Close Button */
+        .lightbox-close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: 0.3s; cursor: pointer; z-index: 1002; user-select: none; }
+        .lightbox-close:hover, .lightbox-close:focus { color: #bbb; text-decoration: none; }
+
+        /* Butterfly Cursor */
+        .butterfly-cursor { /* ... */ }
+        /* ... other cursor styles ... */
+        .invert-cursor .butterfly-body, .invert-cursor .butterfly-wing { /* ... */ }
+        .project-hover .butterfly-body, .project-hover .butterfly-wing { /* ... */ }
+        .green-cursor .butterfly-body, .green-cursor .butterfly-wing { /* ... */ }
+        .orange-cursor .butterfly-body, .orange-cursor .butterfly-wing { /* ... */ }
+        @keyframes flapWings { /* ... */ }
+
+        /* Decorative Elements */
+        .decorative-element { /* ... */ }
+        .gradient-box { /* ... */ }
+        /* ... other decor styles ... */
+        .decorative-element, .bg-shape, .bg-scribble3, .bg-line { transition: filter 0.4s ease, opacity 0.4s ease; }
+
+        /* Animations */
+        @keyframes float { /* ... */ }
+        @keyframes pulse { /* ... */ }
+        @keyframes draw { /* ... */ }
+
+         /* --- Styles copied from previous versions (keep for consistency) --- */
+         .butterfly-cursor { position: fixed; width: 40px; height: 40px; pointer-events: none; z-index: 9999; transform-origin: center; transition: transform 0.1s ease; }
+         .butterfly-body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 16px; background-color: white; border-radius: 50%; z-index: 2; transition: background-color 0.3s ease; }
+         .butterfly-wing { position: absolute; width: 20px; height: 24px; background-color: white; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; transition: all 0.3s ease; animation: flapWings 0.8s infinite ease-in-out; }
+         .butterfly-wing-left { left: 0; transform-origin: right center; transform: rotate(-20deg); }
+         .butterfly-wing-right { right: 0; transform-origin: left center; transform: rotate(20deg); }
+         .butterfly-wing-left-back { left: 5px; top: 10px; transform: rotate(-40deg); width: 15px; height: 20px; opacity: 0.7; }
+         .butterfly-wing-right-back { right: 5px; top: 10px; transform: rotate(40deg); width: 15px; height: 20px; opacity: 0.7; }
+         .invert-cursor .butterfly-body, .invert-cursor .butterfly-wing { background-color: black; mix-blend-mode: difference; }
+         .project-hover .butterfly-body, .project-hover .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; box-shadow: 0 0 10px #00ff66; }
+         .green-cursor .butterfly-body, .green-cursor .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; }
+         .orange-cursor .butterfly-body, .orange-cursor .butterfly-wing { background-color: #ff6600; mix-blend-mode: normal; }
+         @keyframes flapWings { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
+         .decorative-element { position: absolute; z-index: 1; opacity: 0.5; transition: filter 0.4s ease, opacity 0.4s ease; pointer-events: none; }
+         .gradient-box { top: 10%; left: -5%; width: 150px; height: 150px; background: linear-gradient(to bottom, #00ff66, #003311); border-radius: 10px; }
+         .orange-box { top: 60%; right: -3%; width: 80px; height: 150px; background: linear-gradient(to bottom, #ff6600, #993300); border-radius: 10px; }
+         .cloud { width: 120px; height: 60px; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); opacity: 0.4; animation: float 8s infinite ease-in-out; }
+         .cloud1 { top: 15%; right: 5%; }
+         .cloud2 { top: 70%; left: 5%; animation-delay: 2s;}
+         .scribble { filter: drop-shadow(0 0 3px currentColor); opacity: 0.6; }
+         .scribble path { pointer-events: none; }
+         .scribble1 { top: 50%; left: 2%; stroke: #ff4500; stroke-width: 2; }
+         .scribble2 { top: 20%; right: 1%; stroke: white; stroke-width: 1; transform: scale(0.8); }
+         .white-dot { width: 15px; height: 15px; border-radius: 50%; background-color: white; right: 25%; top: 80%; box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.3); animation: pulse 4s infinite ease-in-out; }
+         .bg-shape { position: absolute; border-radius: 10px; z-index: 1; opacity: 0.15; pointer-events: none; transition: filter 0.4s ease, opacity 0.4s ease; }
+         .bg-shape.circle { border-radius: 50%; width: 200px; height: 200px; border: 1px solid #555; top: 25%; left: 5%; }
+         .bg-shape.rect { width: 100px; height: 300px; border: 1px solid #555; top: 70%; right: 8%; transform: rotate(20deg); }
+         .bg-scribble3 { position: absolute; z-index: 1; opacity: 0.6; pointer-events: none; transition: filter 0.4s ease, opacity 0.4s ease; bottom: 5%; right: 20%; stroke: #444; stroke-width: 1; transform: scale(0.7); }
+         .bg-shape.circle2 { border-radius: 50%; width: 50px; height: 50px; border: 1px solid #444; top: 85%; left: 15%; }
+         .bg-line { position: absolute; z-index: 1; opacity: 0.2; width: 1px; height: 400px; background-color: #666; pointer-events: none; transition: filter 0.4s ease, opacity 0.4s ease; }
+         .bg-line-1 { top: 5%; left: 50%; transform: rotate(15deg); }
+         .foreground-element { position: absolute; z-index: 6; pointer-events: none; opacity: 0.6; }
+         .fg-line { width: 1px; height: 200px; background-color: rgba(255, 255, 255, 0.3); }
+         .fg-line-1 { top: 10%; left: 30%; transform: rotate(-15deg); }
+         .fg-line-2 { top: 60%; right: 20%; transform: rotate(10deg); height: 150px; }
+         .fg-circle { width: 10px; height: 10px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; }
+         .fg-circle-1 { top: 40%; left: 15%; }
+         .fg-circle-2 { top: 85%; right: 10%; }
+         .fg-rect { width: 80px; height: 5px; background-color: rgba(255, 255, 255, 0.1); }
+         .fg-rect-1 { top: 90%; left: 40%; transform: rotate(-5deg); }
+         .fg-plus { font-family: monospace; font-size: 20px; color: rgba(255, 255, 255, 0.3); }
+         .fg-plus-1 { top: 5%; left: 10%; }
+         .fg-plus-2 { top: 95%; right: 5%; }
+         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.3); } 50% { transform: scale(1.1); opacity: 0.4; box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.4); } }
+         @keyframes draw { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
+
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link interactive">← Back to Home</a>
+
+    <div class="gradient-box interactive decorative-element"></div>
+    <div class="orange-box interactive decorative-element"></div>
+    <svg class="cloud cloud1 interactive decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
+    <svg class="cloud cloud2 interactive decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
+    <svg class="scribble scribble1 interactive decorative-element" width="200" height="100" viewBox="0 0 200 100"><path d="M10,50 C30,20 50,80 70,30 C90,70 110,20 130,60 C150,30 170,70 190,40" fill="none" stroke="#ff4500" stroke-width="2" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="3s" begin="0s" fill="freeze" /></path></svg>
+    <svg class="scribble scribble2 interactive decorative-element" width="300" height="100" viewBox="0 0 300 100"><path d="M10,50 C50,20 100,80 150,30 C200,70 250,20 290,60" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="4s" begin="1s" fill="freeze" /></path></svg>
+    <div class="white-dot interactive decorative-element"></div>
+    <div class="bg-shape circle decorative-element"></div>
+    <div class="bg-shape rect decorative-element"></div>
+    <svg class="bg-scribble3 decorative-element" width="150" height="80" viewBox="0 0 150 80"><path d="M5,40 C25,10 45,70 65,20 C85,60 105,10 125,50 C135,30 145,60 145,60" fill="none" stroke="#444" stroke-width="1" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="5s" begin="2s" fill="freeze" /></path></svg>
+    <div class="bg-shape circle2 decorative-element"></div>
+    <div class="bg-line bg-line-1 decorative-element"></div>
+    <div id="pageContent" class="page-container">
+        <h1 class="page-title">Miscellaneous Work</h1>
+
+        <div class="foreground-element fg-line fg-line-1"></div>
+        <div class="foreground-element fg-line fg-line-2"></div>
+        <div class="foreground-element fg-circle fg-circle-1"></div>
+        <div class="foreground-element fg-circle fg-circle-2"></div>
+        <div class="foreground-element fg-rect fg-rect-1"></div>
+        <div class="foreground-element fg-plus fg-plus-1">+</div>
+        <div class="foreground-element fg-plus fg-plus-2">+</div>
+        <div class="project-list">
+
+                <div class="project-item">
+                <div class="project-image-area interactive" data-extra-images='["https://imgur.com/BDysDOB.png"]'>
+                    <img src="https://imgur.com/HnKDQMV.png" alt="New Branding Project">
+                </div>
+                <div class="project-text-area">
+                    <div class="project-category">Cultural Rebrand</div>
+                    <h3 class="project-title">BRAT by Charli XCX — Indian Edition</h3>
+                    <p class="project-writeup">
+                        This playful project reimagines Charli XCX’s iconic album BRAT through an Indian lens. From draping Charli in a saree to translating the album title and visuals into Devanagari, the rebrand fuses hyperpop energy with desi aesthetics.
+
+Deliverables include:
+— Posters
+— T-shirt Designs
+— Stickers & Lighters
+All visuals channel the chaotic, confident vibe of BRAT, reinterpreted for an Indian space.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-item">
+                 <div class="project-image-area interactive" data-extra-images='["https://imgur.com/0dMKIGr.png","https://imgur.com/NbHSsYM.png","https://imgur.com/cKljOHt.png","https://imgur.com/RBHQaTt.png","https://imgur.com/QWMwlJ1.png","https://imgur.com/MeBY9on.png","https://imgur.com/bSXMBBZ.png"]'>
+                    <img src="https://imgur.com/PHF7jcW.png" alt="Branding Project 1">
+                </div>
+                <div class="project-text-area">
+                    <div class="project-category">Branding</div>
+                    <h3 class="project-title">Kanye West — STATUE</h3>
+                    <p class="project-writeup">
+                        This conceptual branding project imagines a hypothetical Kanye West album titled STATUE. Built around a strong central theme and narrative, the project draws from upcoming design and cultural trends forecasted by Promostyl to craft a future-forward visual identity.
+
+Deliverables include:
+— Album Art (Front & Back)
+— CD & Packaging Design
+— Merch & Apparel Concepts
+— Posters, Banners, and Promotional Assets
+
+Every element is designed to reflect the imagined world of STATUE—a fusion of monumentality, ego, and avant-garde aesthetics.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-item">
+                 <div class="project-image-area interactive" data-extra-images='["https://imgur.com/NNFEGdd.png","https://imgur.com/GvJcpGI.png","https://imgur.com/DtXyM3A.png","https://imgur.com/jA2Jvx5.png"]'>
+                    <img src="https://imgur.com/7EgVPUb.png" alt="Branding Project 2">
+                </div>
+                <div class="project-text-area">
+                    <div class="project-category">Branding/Packaging design</div>
+                    <h3 class="project-title">CHUG! – Hypothetical Energy Drink</h3>
+                    <p class="project-writeup">
+                         CHUG! is a conceptual energy drink brand built with a bold identity and a playful edge. At its core is Pawddles, a quirky mascot that anchors the brand's storytelling and visual language.
+
+This project explores not just product branding, but world-building—reimagining energy drinks as more than just a beverage. CHUG! becomes a platform to foster a vibrant, geek-positive community, carving out space for nerd culture to thrive in India's mainstream.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-item">
+                 <div class="project-image-area interactive" data-extra-images='["https://imgur.com/bLl853e.png","https://imgur.com/CIEb0u2.png","https://imgur.com/mEurNmU.png","https://imgur.com/vYTK2xg","https://imgur.com/hvxr3Ex.png","https://imgur.com/vYTK2xg.png"]'>
+                    <img src="https://imgur.com/J10ztTu.png" alt="Magazine Project">
+                </div>
+                <div class="project-text-area">
+                    <div class="project-category">Publication Design</div>
+                    <h3 class="project-title">THRESHOLD — Art & Design Magazine</h3>
+                    <p class="project-writeup">
+                         THRESHOLD is a bold, maximalist art and design magazine that celebrates creativity in all its forms. With an unapologetically expressive visual identity, it shines a spotlight on visionary artists and designers from around the world—honoring both emerging dreamers and legendary icons.
+
+Each issue dives into the evolution of art styles and their impact on culture, aiming to educate, excite, and empower its readers. More than just a magazine, THRESHOLD is designed to inspire through both content and craft—pushing the boundaries of print as a medium.
+                    </p>
+                </div>
+            </div>
+
+            <div class="project-item">
+                 <div class="project-image-area interactive" data-extra-images='["https://imgur.com/O4Bxbix.png","https://imgur.com/iM4aWQE.png","https://imgur.com/1aaDzTe.png","https://imgur.com/im1jtSn.png","https://imgur.com/ArK1EHd.png"]'>
+                    <img src="https://imgur.com/pEo6RHd.png" alt="Illustrated Comic Project">
+                </div>
+                <div class="project-text-area">
+                    <div class="project-category">Illustration/Storytelling</div>
+                    <h3 class="project-title">Croco: Bounty, Blood & Betrayal</h3>
+                    <p class="project-writeup">
+                         This 15-page hand-illustrated comic is a modern reimagining of the classic Panchatantra tale of the crocodile and the monkey—infused with action, attitude, and a touch of betrayal.
+                    </p>
+                </div>
+            </div>
+
+             <div class="project-item">
+                 <div class="project-image-area interactive" data-extra-images='["https://imgur.com/Rj9EwRX.png","https://imgur.com/06cMQFQ.png"]'>
+                    <img src="https://imgur.com/9R6PSzY.png" alt="Brochure Project">
+                </div>
+                <div class="project-text-area">
+                    <div class="project-category">Layout Design</div>
+                    <h3 class="project-title">The Neighbourhood — Hypothetical Concert Brochure</h3>
+                    <p class="project-writeup">
+                         This project explores brochure design for a fictional The Neighbourhood concert set in India. The design aims to capture the band's moody, monochrome aesthetic while localizing the experience for an Indian audience.
+                    </p>
+                </div>
+            </div>
+
+        </div> </div> <div id="imageLightbox" class="lightbox-modal">
+        <div class="lightbox-gallery-container">
+             <div class="lightbox-gallery" id="lightboxGalleryContent"></div>
+             <button class="lightbox-nav lightbox-prev" aria-label="Previous image">&#10094;</button>
+             <button class="lightbox-nav lightbox-next" aria-label="Next image">&#10095;</button>
+        </div>
+        <span class="lightbox-close" aria-label="Close lightbox">&times;</span>
+    </div>
+
+
+    <div class="butterfly-cursor">
+        <div class="butterfly-wing butterfly-wing-left"></div>
+        <div class="butterfly-wing butterfly-wing-right"></div>
+        <div class="butterfly-wing butterfly-wing-left-back"></div>
+        <div class="butterfly-wing butterfly-wing-right-back"></div>
+        <div class="butterfly-body"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- Butterfly Cursor Logic ---
+            const butterflyCursor = document.querySelector('.butterfly-cursor');
+            const butterflyWings = document.querySelectorAll('.butterfly-wing');
+             let lastMouseX = 0;
+             let lastMouseY = 0;
+             let angle = 90;
+             function updateButterflyPosition(e) { /* ... */ }
+             document.addEventListener('mousemove', updateButterflyPosition);
+
+            // --- Butterfly Wings Flapping Speed ---
+             let isMoving = false;
+             let moveTimeout;
+             document.addEventListener('mousemove', function() { /* ... */ });
+             butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
+
+            // --- Add interactive class ---
+            document.querySelectorAll('.back-link, .project-image-area, .gradient-box, .orange-box, .cloud, .scribble, .white-dot').forEach(el => {
+                el.classList.add('interactive');
+            });
+
+            // --- Grayscale Hover Effect Logic ---
+            const projectItems = document.querySelectorAll('.project-item');
+            const decorativeElements = document.querySelectorAll('.decorative-element, .bg-shape, .bg-scribble3, .bg-line');
+            const pageContent = document.getElementById('pageContent');
+            const lightbox = document.getElementById('imageLightbox');
+
+            projectItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    if (lightbox.style.display !== 'flex') {
+                        projectItems.forEach(otherItem => {
+                            if (otherItem !== item) { otherItem.classList.add('grayscale-inactive'); }
+                            else { otherItem.classList.remove('grayscale-inactive'); }
+                        });
+                        decorativeElements.forEach(decor => { decor.classList.add('grayscale-inactive'); });
+                    }
+                });
+                item.addEventListener('mouseleave', () => {
+                     if (lightbox.style.display !== 'flex') {
+                        projectItems.forEach(otherItem => { otherItem.classList.remove('grayscale-inactive'); });
+                        decorativeElements.forEach(decor => { decor.classList.remove('grayscale-inactive'); });
+                    }
+                });
+            });
+
+             // --- MODIFIED: Lightbox Gallery Logic ---
+             const lightboxGalleryContent = document.getElementById('lightboxGalleryContent');
+             const closeBtn = document.querySelector('.lightbox-close');
+             const prevBtn = document.querySelector('.lightbox-prev');
+             const nextBtn = document.querySelector('.lightbox-next');
+             const projectImageAreas = document.querySelectorAll('.project-image-area');
+
+             projectImageAreas.forEach(item => {
+                 item.addEventListener('click', () => {
+                     const mainImgElement = item.querySelector('img');
+                     const extraImagesJson = item.dataset.extraImages; // Get JSON string
+                     let extraImageUrls = [];
+
+                     // Safely parse the JSON data
+                     try {
+                         if (extraImagesJson) {
+                             extraImageUrls = JSON.parse(extraImagesJson);
+                         }
+                     } catch (e) {
+                         console.error("Error parsing extra images JSON:", e);
+                         // Keep extraImageUrls as empty array
+                     }
+
+                     if (mainImgElement && mainImgElement.src && !mainImgElement.src.includes('text=Error')) {
+                            // Clear previous gallery content
+                            lightboxGalleryContent.innerHTML = '';
+
+                            // Add main image
+                            const mainImg = document.createElement('img');
+                            mainImg.src = mainImgElement.src;
+                            mainImg.alt = mainImgElement.alt || "Project Image";
+                            lightboxGalleryContent.appendChild(mainImg);
+
+                            // Add extra images
+                            extraImageUrls.forEach(url => {
+                                const extraImg = document.createElement('img');
+                                extraImg.src = url;
+                                // You might want a more descriptive alt text strategy here
+                                extraImg.alt = mainImgElement.alt ? `${mainImgElement.alt} - Extra View` : "Extra Project Image";
+                                // Add error handling for extra images too
+                                extraImg.onerror = function() { this.style.display='none'; };
+                                lightboxGalleryContent.appendChild(extraImg);
+                            });
+
+                            // Show modal and dim background
+                            lightbox.style.display = "flex";
+                            document.body.classList.add('modal-open');
+                            pageContent.classList.add('page-content-dimmed');
+                            projectItems.forEach(i => i.classList.remove('grayscale-inactive'));
+                            decorativeElements.forEach(d => d.classList.remove('grayscale-inactive'));
+
+                            // Reset scroll position of gallery
+                            lightboxGalleryContent.scrollLeft = 0;
+                     }
+                 });
+             });
+
+             // Function to close the modal
+             function closeModal() {
+                 lightbox.style.display = "none";
+                 document.body.classList.remove('modal-open');
+                 pageContent.classList.remove('page-content-dimmed');
+                 // Optional: Clear gallery content on close
+                 // lightboxGalleryContent.innerHTML = '';
+             }
+
+             // Event listeners for close actions
+             closeBtn.addEventListener('click', closeModal);
+             lightbox.addEventListener('click', function(event) {
+                 // Close only if clicking the modal background itself, not the gallery container or buttons
+                 if (event.target === lightbox) {
+                     closeModal();
+                 }
+             });
+
+            // Event listeners for gallery navigation
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent modal close
+                // Scroll left by approx one image width (adjust scroll amount as needed)
+                const scrollAmount = lightboxGalleryContent.clientWidth * 0.8;
+                lightboxGalleryContent.scrollLeft -= scrollAmount;
+            });
+
+            nextBtn.addEventListener('click', (e) => {
+                 e.stopPropagation(); // Prevent modal close
+                 // Scroll right by approx one image width (adjust scroll amount as needed)
+                 const scrollAmount = lightboxGalleryContent.clientWidth * 0.8;
+                 lightboxGalleryContent.scrollLeft += scrollAmount;
+            });
+
+
+             // --- Periodic Animation Reset (Scribbles) ---
+            const scribbleAnims = document.querySelectorAll('.scribble path animate, .bg-scribble3 path animate');
+             if (scribbleAnims.length > 0) { /* ... */ }
+
+
+             // --- Full JS (copying for completeness) ---
+             function updateButterflyPosition(e) {
+                 const mouseX = e.clientX;
+                 const mouseY = e.clientY;
+                 requestAnimationFrame(() => {
+                     butterflyCursor.style.left = `${mouseX - butterflyCursor.offsetWidth / 2}px`;
+                     butterflyCursor.style.top = `${mouseY - butterflyCursor.offsetHeight / 2}px`;
+                     const dx = mouseX - lastMouseX;
+                     const dy = mouseY - lastMouseY;
+                     if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                         angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                     }
+                     butterflyCursor.style.transform = `rotate(${angle}deg)`;
+                     lastMouseX = mouseX;
+                     lastMouseY = mouseY;
+                 });
+                 const elementUnderCursor = document.elementFromPoint(mouseX, mouseY);
+                  butterflyCursor.classList.remove('invert-cursor', 'project-hover', 'green-cursor', 'orange-cursor');
+                  if (elementUnderCursor) {
+                      if (elementUnderCursor.closest('.project-image-area')) { butterflyCursor.classList.add('project-hover'); }
+                      else if (elementUnderCursor.closest('.gradient-box')) { butterflyCursor.classList.add('green-cursor'); }
+                      else if (elementUnderCursor.closest('.orange-box')) { butterflyCursor.classList.add('orange-cursor'); }
+                      else if (elementUnderCursor.closest('.interactive')) { butterflyCursor.classList.add('invert-cursor'); }
+                  }
+             }
+             document.addEventListener('mousemove', function() {
+                 isMoving = true;
+                 butterflyWings.forEach(wing => { wing.style.animationDuration = '0.3s'; });
+                 clearTimeout(moveTimeout);
+                 moveTimeout = setTimeout(() => {
+                     isMoving = false;
+                     butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
+                 }, 150);
+             });
+             if (scribbleAnims.length > 0) { setInterval(() => { scribbleAnims.forEach(anim => { try { anim.beginElement(); } catch (error) { console.warn("Could not restart SVG animation:", error); } }); }, 7000); }
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apparel Design - Sonaksh Tholia</title>
+    <style>
+        /* Import Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Work+Sans:wght@300;400;600&display=swap');
+
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+            width: 100vw;
+            position: relative; /* Needed for absolute decor */
+            font-family: 'Work Sans', sans-serif;
+            cursor: none;
+            padding-top: 100px;
+            padding-bottom: 80px;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Main Container */
+        .page-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative; /* Context for foreground decor inside */
+            z-index: 10;
+            transition: filter 0.4s ease, opacity 0.4s ease;
+        }
+        .page-content-dimmed {
+            filter: brightness(0.3) grayscale(60%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Page Title Styling */
+        .page-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 4rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: #eee;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Back Link Styling */
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+        .back-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* Brand Section Headers */
+        .brand-section {
+            margin: 4rem 0;
+            position: relative;
+        }
+        .brand-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+            z-index: 6; /* Ensure title is above background decor */
+        }
+        .brand-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
+        .brand-role {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #bbb;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+            position: relative; /* Keep in flow but allow z-index */
+            z-index: 6;
+        }
+        .brand-description {
+            max-width: 800px;
+            margin-bottom: 3rem;
+            font-weight: 400;
+            line-height: 1.7;
+            color: #e0e0e0;
+            font-size: 1rem;
+             position: relative; /* Keep in flow but allow z-index */
+            z-index: 6;
+        }
+
+        /* FARAK Section Specific */
+        #farak .brand-title { color: #00ff66; }
+        #farak .brand-title::after { background: linear-gradient(90deg, transparent, #00ff66, transparent); }
+
+        /* GALLI Section Specific */
+        #galli .brand-title { color: #ff3366; }
+        #galli .brand-title::after { background: linear-gradient(90deg, transparent, #ff3366, transparent); }
+        #galli .brand-title,
+        #galli .brand-role,
+        #galli .brand-description {
+             display: block;
+             margin-left: auto;
+             text-align: right;
+        }
+
+        /* Masonry Layout Container */
+        .apparel-masonry-container {
+            column-count: 3;
+            column-gap: 1.5rem;
+            position: relative;
+            z-index: 5; /* Above background decor, below foreground */
+        }
+        @media (max-width: 900px) { .apparel-masonry-container { column-count: 2; } }
+        @media (max-width: 600px) { .apparel-masonry-container { column-count: 1; } }
+
+        /* Apparel Item Styling */
+        .apparel-item {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            width: 100%;
+            break-inside: avoid;
+            position: relative;
+            transition: transform 0.3s ease, filter 0.4s ease, opacity 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .apparel-item:hover {
+            transform: scale(1.07);
+            z-index: 15; /* Bring item above foreground decor on hover */
+        }
+         /* Brand specific hover glow */
+        #farak .apparel-item:hover { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 25px 5px rgba(0, 255, 102, 0.4); border-color: rgba(0, 255, 102, 0.6); }
+         #galli .apparel-item:hover { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 25px 5px rgba(255, 51, 102, 0.4); border-color: rgba(255, 51, 102, 0.6); }
+
+        .apparel-item img {
+            display: block;
+            width: 100%;
+            height: auto;
+            background-color: #111;
+        }
+
+        /* Description Overlay */
+        .apparel-description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 60%, transparent 100%);
+            color: #fff;
+            padding: 2rem 1rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            z-index: 16;
+        }
+        .apparel-item:hover .apparel-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Style for grayscale effect on hover (non-active items) */
+        .grayscale-inactive {
+            filter: grayscale(100%);
+            opacity: 0.4;
+        }
+
+        /* Lightbox Modal Styles */
+        .lightbox-modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background-color: rgba(0, 0, 0, 0.95); justify-content: center; align-items: center; cursor: pointer; }
+        .lightbox-content { margin: auto; display: block; max-width: 90%; max-height: 90%; cursor: default; animation: zoomIn 0.3s ease; }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0;} to { transform: scale(1); opacity: 1;} }
+        .lightbox-close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: 0.3s; cursor: pointer; z-index: 1002; }
+        .lightbox-close:hover, .lightbox-close:focus { color: #bbb; text-decoration: none; }
+
+        /* Section Divider */
+        .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); margin: 6rem 0; position: relative; }
+        .divider-emblem { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: #000; padding: 0 20px; font-family: 'Oswald', sans-serif; font-size: 1.5rem; letter-spacing: 5px; text-transform: uppercase; }
+
+        /* Butterfly Cursor */
+        .butterfly-cursor { position: fixed; width: 40px; height: 40px; pointer-events: none; z-index: 9999; transform-origin: center; transition: transform 0.1s ease; }
+        .butterfly-body { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 16px; background-color: white; border-radius: 50%; z-index: 2; transition: background-color 0.3s ease; }
+        .butterfly-wing { position: absolute; width: 20px; height: 24px; background-color: white; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; transition: all 0.3s ease; animation: flapWings 0.8s infinite ease-in-out; }
+        .butterfly-wing-left { left: 0; transform-origin: right center; transform: rotate(-20deg); }
+        .butterfly-wing-right { right: 0; transform-origin: left center; transform: rotate(20deg); }
+        .butterfly-wing-left-back { left: 5px; top: 10px; transform: rotate(-40deg); width: 15px; height: 20px; opacity: 0.7; }
+        .butterfly-wing-right-back { right: 5px; top: 10px; transform: rotate(40deg); width: 15px; height: 20px; opacity: 0.7; }
+        .invert-cursor .butterfly-body, .invert-cursor .butterfly-wing { background-color: black; mix-blend-mode: difference; }
+        .apparel-hover.farak .butterfly-body, .apparel-hover.farak .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; box-shadow: 0 0 10px #00ff66; }
+        .apparel-hover.galli .butterfly-body, .apparel-hover.galli .butterfly-wing { background-color: #ff3366; mix-blend-mode: normal; box-shadow: 0 0 10px #ff3366; }
+        .green-cursor .butterfly-body, .green-cursor .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; }
+        .orange-cursor .butterfly-body, .orange-cursor .butterfly-wing { background-color: #ff6600; mix-blend-mode: normal; }
+        @keyframes flapWings { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
+
+        /* Decorative Elements (Background) */
+        .decorative-element {
+             position: absolute;
+             z-index: 1; /* Behind everything except body */
+             opacity: 0.5;
+             transition: filter 0.4s ease, opacity 0.4s ease;
+             pointer-events: none; /* Let clicks pass through */
+        }
+        .gradient-box { top: 10%; left: -5%; width: 150px; height: 150px; background: linear-gradient(to bottom, #00ff66, #003311); border-radius: 10px; }
+        .orange-box { top: 60%; right: -3%; width: 80px; height: 150px; background: linear-gradient(to bottom, #ff6600, #993300); border-radius: 10px; }
+        .cloud { width: 120px; height: 60px; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); opacity: 0.4; animation: float 8s infinite ease-in-out; }
+        .cloud1 { top: 15%; right: 5%; }
+        .cloud2 { top: 70%; left: 5%; animation-delay: 2s;}
+        .scribble { filter: drop-shadow(0 0 3px currentColor); opacity: 0.6; }
+        .scribble path { pointer-events: none; }
+        .scribble1 { top: 50%; left: 2%; stroke: #ff4500; stroke-width: 2; }
+        .scribble2 { top: 20%; right: 1%; stroke: white; stroke-width: 1; transform: scale(0.8); }
+        .white-dot { width: 15px; height: 15px; border-radius: 50%; background-color: white; right: 25%; top: 80%; box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.3); animation: pulse 4s infinite ease-in-out; }
+
+        /* Additional Background Elements */
+        .bg-shape {
+            position: absolute;
+            border-radius: 10px;
+            z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+            transition: filter 0.4s ease, opacity 0.4s ease;
+        }
+        .bg-shape.circle { border-radius: 50%; width: 200px; height: 200px; border: 1px solid #555; top: 25%; left: 5%; }
+        .bg-shape.rect { width: 100px; height: 300px; border: 1px solid #555; top: 70%; right: 8%; transform: rotate(20deg); }
+        .bg-scribble3 { position: absolute; z-index: 1; opacity: 0.6; pointer-events: none; transition: filter 0.4s ease, opacity 0.4s ease; bottom: 5%; right: 20%; stroke: #444; stroke-width: 1; transform: scale(0.7); }
+        /* **** NEW: More Background Elements **** */
+         .bg-shape.circle2 {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            border: 1px solid #444;
+            top: 85%;
+            left: 15%;
+         }
+         .bg-line {
+             position: absolute;
+             z-index: 1;
+             opacity: 0.2;
+             width: 1px;
+             height: 400px;
+             background-color: #666;
+             pointer-events: none;
+             transition: filter 0.4s ease, opacity 0.4s ease;
+         }
+         .bg-line-1 { top: 5%; left: 50%; transform: rotate(15deg); }
+
+        /* Foreground Elements */
+        .foreground-element {
+            position: absolute;
+            z-index: 6; /* Above grid, below hover/lightbox/cursor */
+            pointer-events: none; /* Allow clicks on grid below */
+            opacity: 0.6;
+        }
+        .fg-line { width: 1px; height: 200px; background-color: rgba(255, 255, 255, 0.3); }
+        .fg-line-1 { top: 10%; left: 30%; transform: rotate(-15deg); }
+        .fg-line-2 { top: 60%; right: 20%; transform: rotate(10deg); height: 150px; }
+        .fg-circle { width: 10px; height: 10px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; }
+        .fg-circle-1 { top: 40%; left: 15%; }
+        .fg-circle-2 { top: 85%; right: 10%; }
+        /* **** NEW: More Foreground Elements **** */
+         .fg-rect {
+             width: 80px;
+             height: 5px;
+             background-color: rgba(255, 255, 255, 0.1);
+         }
+         .fg-rect-1 { top: 90%; left: 40%; transform: rotate(-5deg); }
+         .fg-plus {
+             font-family: monospace;
+             font-size: 20px;
+             color: rgba(255, 255, 255, 0.3);
+         }
+         .fg-plus-1 { top: 5%; left: 10%; }
+         .fg-plus-2 { top: 95%; right: 5%; }
+
+
+        /* Reused Animations */
+        @keyframes float { /* ... */ }
+        @keyframes pulse { /* ... */ }
+        @keyframes draw { /* ... */ }
+        @keyframes flapWings { /* ... */ }
+
+         /* --- Styles copied from previous versions (keep for consistency) --- */
+         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.3); } 50% { transform: scale(1.1); opacity: 0.4; box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.4); } }
+         @keyframes draw { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
+         @keyframes flapWings { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
+
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link interactive">← Back to Home</a>
+
+    <div class="gradient-box interactive decorative-element"></div>
+    <div class="orange-box interactive decorative-element"></div>
+    <svg class="cloud cloud1 interactive decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
+    <svg class="cloud cloud2 interactive decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
+    <svg class="scribble scribble1 interactive decorative-element" width="200" height="100" viewBox="0 0 200 100"><path d="M10,50 C30,20 50,80 70,30 C90,70 110,20 130,60 C150,30 170,70 190,40" fill="none" stroke="#ff4500" stroke-width="2" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="3s" begin="0s" fill="freeze" /></path></svg>
+    <svg class="scribble scribble2 interactive decorative-element" width="300" height="100" viewBox="0 0 300 100"><path d="M10,50 C50,20 100,80 150,30 C200,70 250,20 290,60" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="4s" begin="1s" fill="freeze" /></path></svg>
+    <div class="white-dot interactive decorative-element"></div>
+    <div class="bg-shape circle decorative-element"></div>
+    <div class="bg-shape rect decorative-element"></div>
+    <svg class="bg-scribble3 decorative-element" width="150" height="80" viewBox="0 0 150 80"><path d="M5,40 C25,10 45,70 65,20 C85,60 105,10 125,50 C135,30 145,60 145,60" fill="none" stroke="#444" stroke-width="1" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="5s" begin="2s" fill="freeze" /></path></svg>
+    <div class="bg-shape circle2 decorative-element"></div>
+    <div class="bg-line bg-line-1 decorative-element"></div>
+    <div id="pageContent" class="page-container">
+        <h1 class="page-title">Apparel Design</h1>
+
+        <div class="foreground-element fg-line fg-line-1"></div>
+        <div class="foreground-element fg-line fg-line-2"></div>
+        <div class="foreground-element fg-circle fg-circle-1"></div>
+        <div class="foreground-element fg-circle fg-circle-2"></div>
+        <div class="foreground-element fg-rect fg-rect-1"></div>
+        <div class="foreground-element fg-plus fg-plus-1">+</div>
+        <div class="foreground-element fg-plus fg-plus-2">+</div>
+        <section id="farak" class="brand-section">
+            <h2 class="brand-title">FARAK</h2>
+            <p class="brand-role">Freelance Designer & Design Intern | June 2023 – July 2024</p>
+            <p class="brand-description">
+                Over the course of a year, I’ve worked closely with FARAK in both freelance and internship roles. My contributions span across a wide range of graphic design for their Shirts, Tshirts, Pants etc. Here are a few pieces from my time with the brand.
+            </p>
+            <div class="apparel-masonry-container">
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/DSC_5774.jpg?v=1699608336&width=1200" alt="Anarkali Hoodie" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Anarkali Hoodie</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/CholikepeecheShirt_1.jpg?v=1737097861&width=1200" alt="Choli Ke Peeche Shirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Choli Ke Peeche Shirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/Sajan2MegapixelkaT-shirt_3.jpg?v=1737452713&width=1200" alt="Sajan 2 Megapixel Ka Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Sajan 2 Megapixel Ka Tshirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/BeautyLastsForeverblockprintt-shirt_1.jpg?v=1737452837&width=1200" alt="Beauty Lasts Forever Blockprint Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Beauty Lasts Forever Blockprint Tshirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/FseFARAK_Stamptee_1_55630224-e96e-42ae-934b-ee808c9e6676.jpg?v=1737452627&width=1200" alt="F se FARAK Stamp Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">F se FARAK Stamp Tshirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/25-10-2024FARAK4456copy.jpg?v=1730798976&width=1200" alt="Mehfil Hoodie" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Mehfil Hoodie</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/25-08-2023FARAK00381copy.jpg?v=1737453439&width=1200" alt="Pinboard Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Pinboard Tshirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/04thmay20241405copy.jpg?v=1737452991&width=1200" alt="Sardaar Ka Namak Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Sardaar Ka Namak Tshirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/33.png?v=1739795286&width=1200" alt="Tu Tu Mein Mein" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Tu Tu Mein Mein</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/04thmay20241538copy.jpg?v=1718194099&width=1200" alt="Taaza Khaabar Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Taaza Khaabar Tshirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/04thmay20241182copy.jpg?v=1737092232&width=1200" alt="Comic Shirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Comic Shirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/04thmay20241730copy.jpg?v=1737092434&width=1200" alt="Puppet Shirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Puppet Shirt</div> </div>
+                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/17.png?v=1737092272&width=1200" alt="Gully Games Shirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Gully Games Shirt</div> </div>
+            </div>
+        </section>
+
+        <div class="section-divider"> <div class="divider-emblem">×</div> </div>
+
+        <section id="galli" class="brand-section">
+            <h2 class="brand-title">GALLI</h2>
+            <p class="brand-role">Freelance Graphic Designer | Dec 2023 – Present</p>
+            <p class="brand-description">
+               I’ve been collaborating with GALLI for over 15 months, contributing across creative strategy and visual execution. My role has involved developing product concepts and designing graphics that align with the brand’s identity.
+Here are a few highlights of my work—with more dropping soon.
+            </p>
+            <div class="apparel-masonry-container">
+                <div class="apparel-item interactive"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Skull-Website-03-01.png" alt="Skull Candy" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Skull Candy</div> </div>
+                 <div class="apparel-item interactive"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Coala-Website-03-01-1.png" alt="Coala Float" onerror="this.onerror=null; this.src='https://placehold.co/400/600/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Coala Float</div> </div>
+                 <div class="apparel-item interactive"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Iceberg-Website-02-01.png" alt="Iceberg" onerror="this.onerror=null; this.src='https://placehold.co/400/450/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Iceberg</div> </div>
+                 <div class="apparel-item interactive"> <img src="https://galli.co.in/wp-content/uploads/2024/05/PHOOL-AUR-KANTE-CO-ORD-2-scaled.webp" alt="Phool Aur Kante" onerror="this.onerror=null; this.src='https://placehold.co/400/550/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Phool Aur Kante</div> </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="imageLightbox" class="lightbox-modal">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightboxImage">
+    </div>
+
+    <div class="butterfly-cursor">
+        <div class="butterfly-wing butterfly-wing-left"></div>
+        <div class="butterfly-wing butterfly-wing-right"></div>
+        <div class="butterfly-wing butterfly-wing-left-back"></div>
+        <div class="butterfly-wing butterfly-wing-right-back"></div>
+        <div class="butterfly-body"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- Butterfly Cursor Logic ---
+            const butterflyCursor = document.querySelector('.butterfly-cursor');
+            const butterflyWings = document.querySelectorAll('.butterfly-wing');
+             let lastMouseX = 0;
+             let lastMouseY = 0;
+             let angle = 90;
+             function updateButterflyPosition(e) { /* ... */ }
+             document.addEventListener('mousemove', updateButterflyPosition);
+
+            // --- Butterfly Wings Flapping Speed ---
+             let isMoving = false;
+             let moveTimeout;
+             document.addEventListener('mousemove', function() { /* ... */ });
+             butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
+
+            // --- Add interactive class ---
+            document.querySelectorAll('.back-link, .apparel-item, .gradient-box, .orange-box, .cloud, .scribble, .white-dot').forEach(el => {
+                el.classList.add('interactive');
+            });
+
+            // --- Grayscale Hover Effect Logic ---
+            const apparelItems = document.querySelectorAll('.apparel-item');
+            // **** MODIFIED: Include new background elements in selector ****
+            const decorativeElements = document.querySelectorAll('.decorative-element, .bg-shape, .bg-scribble3, .bg-line');
+            const pageContent = document.getElementById('pageContent');
+            const lightbox = document.getElementById('imageLightbox');
+
+            apparelItems.forEach(item => {
+                 item.style.cursor = 'pointer';
+                item.addEventListener('mouseenter', () => {
+                    if (lightbox.style.display !== 'flex') {
+                        apparelItems.forEach(otherItem => {
+                            if (otherItem !== item) { otherItem.classList.add('grayscale-inactive'); }
+                            else { otherItem.classList.remove('grayscale-inactive'); }
+                        });
+                        decorativeElements.forEach(decor => { decor.classList.add('grayscale-inactive'); });
+                    }
+                });
+                item.addEventListener('mouseleave', () => {
+                     if (lightbox.style.display !== 'flex') {
+                        apparelItems.forEach(otherItem => { otherItem.classList.remove('grayscale-inactive'); });
+                        decorativeElements.forEach(decor => { decor.classList.remove('grayscale-inactive'); });
+                    }
+                });
+            });
+
+             // --- Lightbox Modal Logic ---
+             const lightboxImg = document.getElementById('lightboxImage');
+             const closeBtn = document.querySelector('.lightbox-close');
+
+             apparelItems.forEach(item => {
+                 item.addEventListener('click', () => {
+                     const imgElement = item.querySelector('img');
+                     const descElement = item.querySelector('.apparel-description');
+                     const altText = imgElement ? imgElement.alt : '';
+                     const caption = descElement ? descElement.textContent : altText;
+
+                     if (imgElement && imgElement.src && !imgElement.src.includes('text=Error')) {
+                            lightbox.style.display = "flex";
+                            lightboxImg.src = imgElement.src;
+                            lightboxImg.alt = caption;
+                            document.body.classList.add('modal-open');
+                            pageContent.classList.add('page-content-dimmed');
+                            apparelItems.forEach(i => i.classList.remove('grayscale-inactive'));
+                            decorativeElements.forEach(d => d.classList.remove('grayscale-inactive'));
+                     }
+                 });
+             });
+
+             function closeModal() { /* ... */ }
+             closeBtn.addEventListener('click', closeModal);
+             lightbox.addEventListener('click', function(event) { /* ... */ });
+
+             // --- Periodic Animation Reset (Scribbles) ---
+            const scribbleAnims = document.querySelectorAll('.scribble path animate, .bg-scribble3 path animate');
+             if (scribbleAnims.length > 0) { /* ... */ }
+
+
+             // --- Full JS (copying for completeness) ---
+             function updateButterflyPosition(e) {
+                 const mouseX = e.clientX;
+                 const mouseY = e.clientY;
+                 requestAnimationFrame(() => {
+                     butterflyCursor.style.left = `${mouseX - butterflyCursor.offsetWidth / 2}px`;
+                     butterflyCursor.style.top = `${mouseY - butterflyCursor.offsetHeight / 2}px`;
+                     const dx = mouseX - lastMouseX;
+                     const dy = mouseY - lastMouseY;
+                     if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                         angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                     }
+                     butterflyCursor.style.transform = `rotate(${angle}deg)`;
+                     lastMouseX = mouseX;
+                     lastMouseY = mouseY;
+                 });
+                 const elementUnderCursor = document.elementFromPoint(mouseX, mouseY);
+                 butterflyCursor.classList.remove('invert-cursor', 'apparel-hover', 'farak', 'galli', 'green-cursor', 'orange-cursor');
+                 if (elementUnderCursor) {
+                     const apparelItem = elementUnderCursor.closest('.apparel-item');
+                     if (apparelItem) {
+                         butterflyCursor.classList.add('apparel-hover');
+                         if (apparelItem.closest('#farak')) { butterflyCursor.classList.add('farak'); }
+                         else if (apparelItem.closest('#galli')) { butterflyCursor.classList.add('galli'); }
+                     } else if (elementUnderCursor.closest('.gradient-box')) { butterflyCursor.classList.add('green-cursor');
+                     } else if (elementUnderCursor.closest('.orange-box')) { butterflyCursor.classList.add('orange-cursor');
+                     } else if (elementUnderCursor.closest('.interactive')) { butterflyCursor.classList.add('invert-cursor'); }
+                 }
+             }
+             document.addEventListener('mousemove', updateButterflyPosition);
+             document.addEventListener('mousemove', function() {
+                 isMoving = true;
+                 butterflyWings.forEach(wing => { wing.style.animationDuration = '0.3s'; });
+                 clearTimeout(moveTimeout);
+                 moveTimeout = setTimeout(() => {
+                     isMoving = false;
+                     butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
+                 }, 150);
+             });
+             function closeModal() {
+                 lightbox.style.display = "none";
+                 document.body.classList.remove('modal-open');
+                 pageContent.classList.remove('page-content-dimmed');
+             }
+             closeBtn.addEventListener('click', closeModal);
+             lightbox.addEventListener('click', function(event) { if (event.target === lightbox) { closeModal(); } });
+             if (scribbleAnims.length > 0) { setInterval(() => { scribbleAnims.forEach(anim => { try { anim.beginElement(); } catch (error) { console.warn("Could not restart SVG animation:", error); } }); }, 7000); }
+
+
+        });
+    </script>
+</body>
+</html>
