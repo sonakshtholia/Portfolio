@@ -23,7 +23,7 @@
             overflow-y: auto;
             min-height: 100vh;
             width: 100vw;
-            position: relative; /* Needed for absolute decor */
+            position: relative;
             font-family: 'Work Sans', sans-serif;
             cursor: none;
             padding-top: 100px;
@@ -38,7 +38,7 @@
             padding: 2rem;
             max-width: 1400px;
             margin: 0 auto;
-            position: relative; /* Context for foreground decor inside */
+            position: relative;
             z-index: 10;
             transition: filter 0.4s ease, opacity 0.4s ease;
         }
@@ -79,7 +79,7 @@
             border-radius: 20px;
             background-color: rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
-            cursor: none;
+            cursor: pointer;
         }
         .back-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
@@ -99,7 +99,7 @@
             margin-bottom: 0.5rem;
             position: relative;
             display: inline-block;
-            z-index: 6; /* Ensure title is above background decor */
+            z-index: 6;
         }
         .brand-title::after {
             content: '';
@@ -116,7 +116,7 @@
             color: #bbb;
             margin-bottom: 1.5rem;
             letter-spacing: 0.5px;
-            position: relative; /* Keep in flow but allow z-index */
+            position: relative;
             z-index: 6;
         }
         .brand-description {
@@ -126,7 +126,7 @@
             line-height: 1.7;
             color: #e0e0e0;
             font-size: 1rem;
-             position: relative; /* Keep in flow but allow z-index */
+            position: relative;
             z-index: 6;
         }
 
@@ -145,12 +145,16 @@
              text-align: right;
         }
 
+        /* HUEMN Section Specific */
+        #huemn .brand-title { color: #00ccff; }
+        #huemn .brand-title::after { background: linear-gradient(90deg, transparent, #00ccff, transparent); }
+
         /* Masonry Layout Container */
         .apparel-masonry-container {
             column-count: 3;
             column-gap: 1.5rem;
             position: relative;
-            z-index: 5; /* Above background decor, below foreground */
+            z-index: 5;
         }
         @media (max-width: 900px) { .apparel-masonry-container { column-count: 2; } }
         @media (max-width: 600px) { .apparel-masonry-container { column-count: 1; } }
@@ -172,11 +176,12 @@
 
         .apparel-item:hover {
             transform: scale(1.07);
-            z-index: 15; /* Bring item above foreground decor on hover */
+            z-index: 15;
         }
          /* Brand specific hover glow */
         #farak .apparel-item:hover { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 25px 5px rgba(0, 255, 102, 0.4); border-color: rgba(0, 255, 102, 0.6); }
-         #galli .apparel-item:hover { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 25px 5px rgba(255, 51, 102, 0.4); border-color: rgba(255, 51, 102, 0.6); }
+        #galli .apparel-item:hover { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 25px 5px rgba(255, 51, 102, 0.4); border-color: rgba(255, 51, 102, 0.6); }
+        #huemn .apparel-item:hover { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 25px 5px rgba(0, 204, 255, 0.4); border-color: rgba(0, 204, 255, 0.6); }
 
         .apparel-item img {
             display: block;
@@ -234,8 +239,27 @@
         .butterfly-wing-left-back { left: 5px; top: 10px; transform: rotate(-40deg); width: 15px; height: 20px; opacity: 0.7; }
         .butterfly-wing-right-back { right: 5px; top: 10px; transform: rotate(40deg); width: 15px; height: 20px; opacity: 0.7; }
         .invert-cursor .butterfly-body, .invert-cursor .butterfly-wing { background-color: black; mix-blend-mode: difference; }
-        .apparel-hover.farak .butterfly-body, .apparel-hover.farak .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; box-shadow: 0 0 10px #00ff66; }
-        .apparel-hover.galli .butterfly-body, .apparel-hover.galli .butterfly-wing { background-color: #ff3366; mix-blend-mode: normal; box-shadow: 0 0 10px #ff3366; }
+        
+        /* Brand-specific cursor colors */
+        .apparel-hover.farak .butterfly-body, 
+        .apparel-hover.farak .butterfly-wing { 
+            background-color: #00ff66 !important; 
+            mix-blend-mode: normal !important; 
+            box-shadow: 0 0 10px #00ff66; 
+        }
+        .apparel-hover.galli .butterfly-body, 
+        .apparel-hover.galli .butterfly-wing { 
+            background-color: #ff3366 !important; 
+            mix-blend-mode: normal !important; 
+            box-shadow: 0 0 10px #ff3366; 
+        }
+        .apparel-hover.huemn .butterfly-body, 
+        .apparel-hover.huemn .butterfly-wing { 
+            background-color: #00ccff !important; 
+            mix-blend-mode: normal !important; 
+            box-shadow: 0 0 10px #00ccff; 
+        }
+        
         .green-cursor .butterfly-body, .green-cursor .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; }
         .orange-cursor .butterfly-body, .orange-cursor .butterfly-wing { background-color: #ff6600; mix-blend-mode: normal; }
         @keyframes flapWings { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
@@ -243,10 +267,10 @@
         /* Decorative Elements (Background) */
         .decorative-element {
              position: absolute;
-             z-index: 1; /* Behind everything except body */
+             z-index: 1;
              opacity: 0.5;
              transition: filter 0.4s ease, opacity 0.4s ease;
-             pointer-events: none; /* Let clicks pass through */
+             pointer-events: none;
         }
         .gradient-box { top: 10%; left: -5%; width: 150px; height: 150px; background: linear-gradient(to bottom, #00ff66, #003311); border-radius: 10px; }
         .orange-box { top: 60%; right: -3%; width: 80px; height: 150px; background: linear-gradient(to bottom, #ff6600, #993300); border-radius: 10px; }
@@ -271,7 +295,6 @@
         .bg-shape.circle { border-radius: 50%; width: 200px; height: 200px; border: 1px solid #555; top: 25%; left: 5%; }
         .bg-shape.rect { width: 100px; height: 300px; border: 1px solid #555; top: 70%; right: 8%; transform: rotate(20deg); }
         .bg-scribble3 { position: absolute; z-index: 1; opacity: 0.6; pointer-events: none; transition: filter 0.4s ease, opacity 0.4s ease; bottom: 5%; right: 20%; stroke: #444; stroke-width: 1; transform: scale(0.7); }
-        /* **** NEW: More Background Elements **** */
          .bg-shape.circle2 {
             border-radius: 50%;
             width: 50px;
@@ -295,8 +318,8 @@
         /* Foreground Elements */
         .foreground-element {
             position: absolute;
-            z-index: 6; /* Above grid, below hover/lightbox/cursor */
-            pointer-events: none; /* Allow clicks on grid below */
+            z-index: 6;
+            pointer-events: none;
             opacity: 0.6;
         }
         .fg-line { width: 1px; height: 200px; background-color: rgba(255, 255, 255, 0.3); }
@@ -305,7 +328,6 @@
         .fg-circle { width: 10px; height: 10px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; }
         .fg-circle-1 { top: 40%; left: 15%; }
         .fg-circle-2 { top: 85%; right: 10%; }
-        /* **** NEW: More Foreground Elements **** */
          .fg-rect {
              width: 80px;
              height: 5px;
@@ -320,38 +342,26 @@
          .fg-plus-1 { top: 5%; left: 10%; }
          .fg-plus-2 { top: 95%; right: 5%; }
 
-
-        /* Reused Animations */
-        @keyframes float { /* ... */ }
-        @keyframes pulse { /* ... */ }
-        @keyframes draw { /* ... */ }
-        @keyframes flapWings { /* ... */ }
-
-         /* --- Styles copied from previous versions (keep for consistency) --- */
          @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
          @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.5; box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.3); } 50% { transform: scale(1.1); opacity: 0.4; box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.4); } }
-         @keyframes draw { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
-         @keyframes flapWings { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
 
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link interactive">← Back to Home</a>
+    <a href="index.html" class="back-link">← Back to Home</a>
 
-    <div class="gradient-box interactive decorative-element"></div>
-    <div class="orange-box interactive decorative-element"></div>
-    <svg class="cloud cloud1 interactive decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
-    <svg class="cloud cloud2 interactive decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
-    <svg class="scribble scribble1 interactive decorative-element" width="200" height="100" viewBox="0 0 200 100"><path d="M10,50 C30,20 50,80 70,30 C90,70 110,20 130,60 C150,30 170,70 190,40" fill="none" stroke="#ff4500" stroke-width="2" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="3s" begin="0s" fill="freeze" /></path></svg>
-    <svg class="scribble scribble2 interactive decorative-element" width="300" height="100" viewBox="0 0 300 100"><path d="M10,50 C50,20 100,80 150,30 C200,70 250,20 290,60" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="4s" begin="1s" fill="freeze" /></path></svg>
-    <div class="white-dot interactive decorative-element"></div>
+    <div class="gradient-box decorative-element"></div>
+    <div class="orange-box decorative-element"></div>
+    <svg class="cloud cloud1 decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
+    <svg class="cloud cloud2 decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
+    <div class="white-dot decorative-element"></div>
     <div class="bg-shape circle decorative-element"></div>
     <div class="bg-shape rect decorative-element"></div>
-    <svg class="bg-scribble3 decorative-element" width="150" height="80" viewBox="0 0 150 80"><path d="M5,40 C25,10 45,70 65,20 C85,60 105,10 125,50 C135,30 145,60 145,60" fill="none" stroke="#444" stroke-width="1" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="5s" begin="2s" fill="freeze" /></path></svg>
     <div class="bg-shape circle2 decorative-element"></div>
     <div class="bg-line bg-line-1 decorative-element"></div>
+    
     <div id="pageContent" class="page-container">
-        <h1 class="page-title">Apparel Design</h1>
+        <h1 class="page-title">Apparel Graphics</h1>
 
         <div class="foreground-element fg-line fg-line-1"></div>
         <div class="foreground-element fg-line fg-line-2"></div>
@@ -360,26 +370,25 @@
         <div class="foreground-element fg-rect fg-rect-1"></div>
         <div class="foreground-element fg-plus fg-plus-1">+</div>
         <div class="foreground-element fg-plus fg-plus-2">+</div>
+
         <section id="farak" class="brand-section">
             <h2 class="brand-title">FARAK</h2>
             <p class="brand-role">Freelance Designer & Design Intern | June 2023 – July 2024</p>
             <p class="brand-description">
-                Over the course of a year, I’ve worked closely with FARAK in both freelance and internship roles. My contributions span across a wide range of graphic design for their Shirts, Tshirts, Pants etc. Here are a few pieces from my time with the brand.
+                Over the course of a year, I've worked closely with FARAK in both freelance and internship roles. My contributions span across a wide range of graphic design for their Shirts, Tshirts, Pants etc. Here are a few pieces from my time with the brand.
             </p>
             <div class="apparel-masonry-container">
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/DSC_5774.jpg?v=1699608336&width=1200" alt="Anarkali Hoodie" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Anarkali Hoodie</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/CholikepeecheShirt_1.jpg?v=1737097861&width=1200" alt="Choli Ke Peeche Shirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Choli Ke Peeche Shirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/Sajan2MegapixelkaT-shirt_3.jpg?v=1737452713&width=1200" alt="Sajan 2 Megapixel Ka Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Sajan 2 Megapixel Ka Tshirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/BeautyLastsForeverblockprintt-shirt_1.jpg?v=1737452837&width=1200" alt="Beauty Lasts Forever Blockprint Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Beauty Lasts Forever Blockprint Tshirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/FseFARAK_Stamptee_1_55630224-e96e-42ae-934b-ee808c9e6676.jpg?v=1737452627&width=1200" alt="F se FARAK Stamp Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">F se FARAK Stamp Tshirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/25-10-2024FARAK4456copy.jpg?v=1730798976&width=1200" alt="Mehfil Hoodie" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Mehfil Hoodie</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/25-08-2023FARAK00381copy.jpg?v=1737453439&width=1200" alt="Pinboard Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Pinboard Tshirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/04thmay20241405copy.jpg?v=1737452991&width=1200" alt="Sardaar Ka Namak Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Sardaar Ka Namak Tshirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/33.png?v=1739795286&width=1200" alt="Tu Tu Mein Mein" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Tu Tu Mein Mein</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/04thmay20241538copy.jpg?v=1718194099&width=1200" alt="Taaza Khaabar Tshirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Taaza Khaabar Tshirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/04thmay20241182copy.jpg?v=1737092232&width=1200" alt="Comic Shirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Comic Shirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/04thmay20241730copy.jpg?v=1737092434&width=1200" alt="Puppet Shirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Puppet Shirt</div> </div>
-                <div class="apparel-item interactive"> <img src="https://farak.co/cdn/shop/files/17.png?v=1737092272&width=1200" alt="Gully Games Shirt" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Gully Games Shirt</div> </div>
+                <div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/DSC_5774.jpg?v=1699608336&width=1200" alt="Anarkali Hoodie"> <div class="apparel-description">Anarkali Hoodie</div> </div>
+                <div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/CholikepeecheShirt_1.jpg?v=1737097861&width=1200" alt="Choli Ke Peeche Shirt"> <div class="apparel-description">Choli Ke Peeche Shirt</div> </div>
+<div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/04thmay20241405copy.jpg?v=1737452991&width=3000" alt="Choli Ke Peeche Shirt"> <div class="apparel-description">Sardar Ka Namak</div> </div>
+                <div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/Sajan2MegapixelkaT-shirt_3.jpg?v=1737452713&width=1200" alt="Sajan 2 Megapixel Ka Tshirt"> <div class="apparel-description">Sajan 2 Megapixel Ka Tshirt</div> </div>
+<div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/04thmay20241730copy.jpg?v=1737092434&width=3000" alt="Sajan 2 Megapixel Ka Tshirt"> <div class="apparel-description">'World's a Stage' - Shirt</div> </div>
+<div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/04th_may_20241254_copy.jpg?v=1737092272&width=3000" alt="Sajan 2 Megapixel Ka Tshirt"> <div class="apparel-description">Gully Games - Shirt</div> </div>
+<div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/25-08-2023FARAK00381copy.jpg?v=1737453439&width=3000" alt="Sajan 2 Megapixel Ka Tshirt"> <div class="apparel-description">Pinboard - Tshirt</div> </div>
+                <div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/BeautyLastsForeverblockprintt-shirt_1.jpg?v=1737452837&width=1200" alt="Beauty Lasts Forever Blockprint Tshirt"> <div class="apparel-description">Beauty Lasts Forever Blockprint Tshirt</div> </div>
+                <div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/FseFARAK_Stamptee_1_55630224-e96e-42ae-934b-ee808c9e6676.jpg?v=1737452627&width=1200" alt="F se FARAK Stamp Tshirt"> <div class="apparel-description">F se FARAK Stamp Tshirt</div> </div>
+                <div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/25-10-2024FARAK4456copy.jpg?v=1730798976&width=1200" alt="Mehfil Hoodie"> <div class="apparel-description">Mehfil Hoodie</div> </div>
+<div class="apparel-item"> <img src="https://farak.co/cdn/shop/files/04thmay20241487copy.jpg?v=1737453134&width=3000" alt="Mehfil Hoodie"> <div class="apparel-description">'Tu Tu Mein Mein' - Tshirt</div> </div>
             </div>
         </section>
 
@@ -389,14 +398,37 @@
             <h2 class="brand-title">GALLI</h2>
             <p class="brand-role">Freelance Graphic Designer | Dec 2023 – Present</p>
             <p class="brand-description">
-               I’ve been collaborating with GALLI for over 15 months, contributing across creative strategy and visual execution. My role has involved developing product concepts and designing graphics that align with the brand’s identity.
-Here are a few highlights of my work—with more dropping soon.
+               I've been collaborating with GALLI for over 15 months, contributing across creative strategy and visual execution. My role has involved developing product concepts and designing graphics that align with the brand's identity. Here are a few highlights of my work—with more dropping soon.
             </p>
             <div class="apparel-masonry-container">
-                <div class="apparel-item interactive"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Skull-Website-03-01.png" alt="Skull Candy" onerror="this.onerror=null; this.src='https://placehold.co/400/500/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Skull Candy</div> </div>
-                 <div class="apparel-item interactive"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Coala-Website-03-01-1.png" alt="Coala Float" onerror="this.onerror=null; this.src='https://placehold.co/400/600/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Coala Float</div> </div>
-                 <div class="apparel-item interactive"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Iceberg-Website-02-01.png" alt="Iceberg" onerror="this.onerror=null; this.src='https://placehold.co/400/450/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Iceberg</div> </div>
-                 <div class="apparel-item interactive"> <img src="https://galli.co.in/wp-content/uploads/2024/05/PHOOL-AUR-KANTE-CO-ORD-2-scaled.webp" alt="Phool Aur Kante" onerror="this.onerror=null; this.src='https://placehold.co/400/550/1a1a1a/cccccc?text=Error';"> <div class="apparel-description">Phool Aur Kante</div> </div>
+                <div class="apparel-item"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Skull-Website-03-01.png" alt="Skull Candy"> <div class="apparel-description">Skull Candy</div> </div>
+                <div class="apparel-item"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Coala-Website-03-01-1.png" alt="Coala Float"> <div class="apparel-description">Coala Float</div> </div>
+                <div class="apparel-item"> <img src="https://galli.co.in/wp-content/uploads/2025/02/Iceberg-Website-02-01.png" alt="Iceberg"> <div class="apparel-description">Iceberg</div> </div>
+                <div class="apparel-item"> <img src="https://galli.co.in/wp-content/uploads/2024/05/PHOOL-AUR-KANTE-CO-ORD-2-scaled.webp" alt="Phool Aur Kante"> <div class="apparel-description">Phool Aur Kante</div> </div>
+ <div class="apparel-item"> <img src="https://i0.wp.com/galli.co.in/wp-content/uploads/2025/05/Goddess-Website-01-1.png?w=1500&ssl=1" alt="Headache Rani"> <div class="apparel-description">Headache Rani</div> </div>
+<div class="apparel-item"> <img src="https://galli.co.in/wp-content/uploads/2025/05/Heart-Website-05-01-1.png" alt="Artery"> <div class="apparel-description">Artery</div> </div>
+<div class="apparel-item"> <img src="https://galli.co.in/wp-content/uploads/2025/05/Sleeveless-Website-02-01.png" alt="Headache Rani"> <div class="apparel-description">Vein</div> </div>
+<div class="apparel-item"> <img src="https://galli.co.in/wp-content/uploads/2025/05/Neon-Website-02-01.png" alt="Headache Rani"> <div class="apparel-description">Haseen Dilruba</div> </div>
+
+
+
+            </div>
+        </section>
+        
+        <div class="section-divider"> <div class="divider-emblem">×</div> </div>
+
+        <section id="huemn" class="brand-section">
+            <h2 class="brand-title">HUEMN</h2>
+            <p class="brand-role">Graphic Design Intern | June 2025 – July 2025</p>
+            <p class="brand-description">
+              During my summer internship at HUEMN, I worked closely with the internal design team and co-founder Mr. Pranav Misra on their Summer Collection, not AW’25. My role primarily focused on developing original graphics as well as translating concepts from other designers into finalized artwork and printable files. In addition to graphic design, I was responsible for creating advertisements, campaign and show invites, Instagram content, and supporting various design requirements across the brand’s creative communication.
+            </p>
+            <div class="apparel-masonry-container">
+                <div class="apparel-item"> <img src="https://huemn.in/cdn/shop/files/2.hover_2_1d3033c2-320d-4e2d-9f3b-4021992e967e_1600x.png?v=1755419313" alt="Graphic Print Sweatshirt"> <div class="apparel-description">Tongue-printed oversized cotton shirt</div> </div>
+                <div class="apparel-item"> <img src="https://huemn.in/cdn/shop/files/Artboard_1_copy_6_bc764293-3624-4d46-9d1a-cad9c48e2893_1600x.jpg?v=1755526990" alt="Patchwork Denim Jacket"> <div class="apparel-description">Fanged floral printed ruffle-edged shirt dress</div> </div>
+                
+                <div class="apparel-item"> <img src="https://huemn.in/cdn/shop/files/3_15721c6e-313b-4990-abf7-646ce81216e9_1600x.png?v=1751010419" alt="'On fire' T-shirt (Black)"> <div class="apparel-description">On fire' T-shirt (Black)</div> </div>
+                <div class="apparel-item"> <img src="https://huemn.in/cdn/shop/files/2._hover_9a92ecae-b200-4854-b3e2-7e61fa595bf2_1600x.png?v=1755420520" alt="Fanged floral cotton shirt - Lime Green"> <div class="apparel-description">Fanged floral cotton shirt - Lime Green</div> </div>
             </div>
         </section>
     </div>
@@ -416,134 +448,140 @@ Here are a few highlights of my work—with more dropping soon.
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            // --- Butterfly Cursor Logic ---
             const butterflyCursor = document.querySelector('.butterfly-cursor');
             const butterflyWings = document.querySelectorAll('.butterfly-wing');
-             let lastMouseX = 0;
-             let lastMouseY = 0;
-             let angle = 90;
-             function updateButterflyPosition(e) { /* ... */ }
-             document.addEventListener('mousemove', updateButterflyPosition);
+            let lastMouseX = 0;
+            let lastMouseY = 0;
+            let angle = 90;
 
-            // --- Butterfly Wings Flapping Speed ---
-             let isMoving = false;
-             let moveTimeout;
-             document.addEventListener('mousemove', function() { /* ... */ });
-             butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
+            function updateButterflyPosition(e) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                requestAnimationFrame(() => {
+                    butterflyCursor.style.left = `${mouseX - butterflyCursor.offsetWidth / 2}px`;
+                    butterflyCursor.style.top = `${mouseY - butterflyCursor.offsetHeight / 2}px`;
+                    const dx = mouseX - lastMouseX;
+                    const dy = mouseY - lastMouseY;
+                    if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                        angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                    }
+                    butterflyCursor.style.transform = `rotate(${angle}deg)`;
+                    lastMouseX = mouseX;
+                    lastMouseY = mouseY;
+                });
+                
+                const elementUnderCursor = document.elementFromPoint(mouseX, mouseY);
+                butterflyCursor.classList.remove('invert-cursor', 'apparel-hover', 'farak', 'galli', 'huemn', 'green-cursor', 'orange-cursor');
+                
+                if (elementUnderCursor) {
+                    const apparelItem = elementUnderCursor.closest('.apparel-item');
+                    const farakSection = elementUnderCursor.closest('#farak');
+                    const galliSection = elementUnderCursor.closest('#galli');
+                    const hueemnSection = elementUnderCursor.closest('#huemn');
+                    
+                    if (apparelItem) {
+                        butterflyCursor.classList.add('apparel-hover');
+                        if (apparelItem.closest('#farak')) { 
+                            butterflyCursor.classList.add('farak'); 
+                        } else if (apparelItem.closest('#galli')) { 
+                            butterflyCursor.classList.add('galli'); 
+                        } else if (apparelItem.closest('#huemn')) { 
+                            butterflyCursor.classList.add('huemn'); 
+                        }
+                    } else if (farakSection) {
+                        butterflyCursor.classList.add('apparel-hover', 'farak');
+                    } else if (galliSection) {
+                        butterflyCursor.classList.add('apparel-hover', 'galli');
+                    } else if (hueemnSection) {
+                        butterflyCursor.classList.add('apparel-hover', 'huemn');
+                    } else if (elementUnderCursor.closest('.back-link')) {
+                        butterflyCursor.classList.add('invert-cursor');
+                    }
+                }
+            }
 
-            // --- Add interactive class ---
-            document.querySelectorAll('.back-link, .apparel-item, .gradient-box, .orange-box, .cloud, .scribble, .white-dot').forEach(el => {
-                el.classList.add('interactive');
+            document.addEventListener('mousemove', updateButterflyPosition);
+
+            let isMoving = false;
+            let moveTimeout;
+            document.addEventListener('mousemove', function() {
+                isMoving = true;
+                butterflyWings.forEach(wing => { wing.style.animationDuration = '0.3s'; });
+                clearTimeout(moveTimeout);
+                moveTimeout = setTimeout(() => {
+                    isMoving = false;
+                    butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
+                }, 150);
             });
 
-            // --- Grayscale Hover Effect Logic ---
             const apparelItems = document.querySelectorAll('.apparel-item');
-            // **** MODIFIED: Include new background elements in selector ****
             const decorativeElements = document.querySelectorAll('.decorative-element, .bg-shape, .bg-scribble3, .bg-line');
             const pageContent = document.getElementById('pageContent');
             const lightbox = document.getElementById('imageLightbox');
 
             apparelItems.forEach(item => {
-                 item.style.cursor = 'pointer';
+                item.style.cursor = 'pointer';
                 item.addEventListener('mouseenter', () => {
                     if (lightbox.style.display !== 'flex') {
                         apparelItems.forEach(otherItem => {
-                            if (otherItem !== item) { otherItem.classList.add('grayscale-inactive'); }
-                            else { otherItem.classList.remove('grayscale-inactive'); }
+                            if (otherItem !== item) { 
+                                otherItem.classList.add('grayscale-inactive'); 
+                            } else { 
+                                otherItem.classList.remove('grayscale-inactive'); 
+                            }
                         });
-                        decorativeElements.forEach(decor => { decor.classList.add('grayscale-inactive'); });
+                        decorativeElements.forEach(decor => { 
+                            decor.classList.add('grayscale-inactive'); 
+                        });
                     }
                 });
+                
                 item.addEventListener('mouseleave', () => {
-                     if (lightbox.style.display !== 'flex') {
-                        apparelItems.forEach(otherItem => { otherItem.classList.remove('grayscale-inactive'); });
-                        decorativeElements.forEach(decor => { decor.classList.remove('grayscale-inactive'); });
+                    if (lightbox.style.display !== 'flex') {
+                        apparelItems.forEach(otherItem => { 
+                            otherItem.classList.remove('grayscale-inactive'); 
+                        });
+                        decorativeElements.forEach(decor => { 
+                            decor.classList.remove('grayscale-inactive'); 
+                        });
                     }
                 });
             });
 
-             // --- Lightbox Modal Logic ---
-             const lightboxImg = document.getElementById('lightboxImage');
-             const closeBtn = document.querySelector('.lightbox-close');
+            const lightboxImg = document.getElementById('lightboxImage');
+            const closeBtn = document.querySelector('.lightbox-close');
 
-             apparelItems.forEach(item => {
-                 item.addEventListener('click', () => {
-                     const imgElement = item.querySelector('img');
-                     const descElement = item.querySelector('.apparel-description');
-                     const altText = imgElement ? imgElement.alt : '';
-                     const caption = descElement ? descElement.textContent : altText;
+            apparelItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgElement = item.querySelector('img');
+                    const descElement = item.querySelector('.apparel-description');
+                    const altText = imgElement ? imgElement.alt : '';
+                    const caption = descElement ? descElement.textContent : altText;
 
-                     if (imgElement && imgElement.src && !imgElement.src.includes('text=Error')) {
-                            lightbox.style.display = "flex";
-                            lightboxImg.src = imgElement.src;
-                            lightboxImg.alt = caption;
-                            document.body.classList.add('modal-open');
-                            pageContent.classList.add('page-content-dimmed');
-                            apparelItems.forEach(i => i.classList.remove('grayscale-inactive'));
-                            decorativeElements.forEach(d => d.classList.remove('grayscale-inactive'));
-                     }
-                 });
-             });
+                    if (imgElement && imgElement.src && !imgElement.src.includes('text=Error')) {
+                        lightbox.style.display = "flex";
+                        lightboxImg.src = imgElement.src;
+                        lightboxImg.alt = caption;
+                        document.body.classList.add('modal-open');
+                        pageContent.classList.add('page-content-dimmed');
+                        apparelItems.forEach(i => i.classList.remove('grayscale-inactive'));
+                        decorativeElements.forEach(d => d.classList.remove('grayscale-inactive'));
+                    }
+                });
+            });
 
-             function closeModal() { /* ... */ }
-             closeBtn.addEventListener('click', closeModal);
-             lightbox.addEventListener('click', function(event) { /* ... */ });
+            function closeModal() {
+                lightbox.style.display = "none";
+                document.body.classList.remove('modal-open');
+                pageContent.classList.remove('page-content-dimmed');
+            }
 
-             // --- Periodic Animation Reset (Scribbles) ---
-            const scribbleAnims = document.querySelectorAll('.scribble path animate, .bg-scribble3 path animate');
-             if (scribbleAnims.length > 0) { /* ... */ }
-
-
-             // --- Full JS (copying for completeness) ---
-             function updateButterflyPosition(e) {
-                 const mouseX = e.clientX;
-                 const mouseY = e.clientY;
-                 requestAnimationFrame(() => {
-                     butterflyCursor.style.left = `${mouseX - butterflyCursor.offsetWidth / 2}px`;
-                     butterflyCursor.style.top = `${mouseY - butterflyCursor.offsetHeight / 2}px`;
-                     const dx = mouseX - lastMouseX;
-                     const dy = mouseY - lastMouseY;
-                     if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-                         angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
-                     }
-                     butterflyCursor.style.transform = `rotate(${angle}deg)`;
-                     lastMouseX = mouseX;
-                     lastMouseY = mouseY;
-                 });
-                 const elementUnderCursor = document.elementFromPoint(mouseX, mouseY);
-                 butterflyCursor.classList.remove('invert-cursor', 'apparel-hover', 'farak', 'galli', 'green-cursor', 'orange-cursor');
-                 if (elementUnderCursor) {
-                     const apparelItem = elementUnderCursor.closest('.apparel-item');
-                     if (apparelItem) {
-                         butterflyCursor.classList.add('apparel-hover');
-                         if (apparelItem.closest('#farak')) { butterflyCursor.classList.add('farak'); }
-                         else if (apparelItem.closest('#galli')) { butterflyCursor.classList.add('galli'); }
-                     } else if (elementUnderCursor.closest('.gradient-box')) { butterflyCursor.classList.add('green-cursor');
-                     } else if (elementUnderCursor.closest('.orange-box')) { butterflyCursor.classList.add('orange-cursor');
-                     } else if (elementUnderCursor.closest('.interactive')) { butterflyCursor.classList.add('invert-cursor'); }
-                 }
-             }
-             document.addEventListener('mousemove', updateButterflyPosition);
-             document.addEventListener('mousemove', function() {
-                 isMoving = true;
-                 butterflyWings.forEach(wing => { wing.style.animationDuration = '0.3s'; });
-                 clearTimeout(moveTimeout);
-                 moveTimeout = setTimeout(() => {
-                     isMoving = false;
-                     butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
-                 }, 150);
-             });
-             function closeModal() {
-                 lightbox.style.display = "none";
-                 document.body.classList.remove('modal-open');
-                 pageContent.classList.remove('page-content-dimmed');
-             }
-             closeBtn.addEventListener('click', closeModal);
-             lightbox.addEventListener('click', function(event) { if (event.target === lightbox) { closeModal(); } });
-             if (scribbleAnims.length > 0) { setInterval(() => { scribbleAnims.forEach(anim => { try { anim.beginElement(); } catch (error) { console.warn("Could not restart SVG animation:", error); } }); }, 7000); }
-
-
+            closeBtn.addEventListener('click', closeModal);
+            lightbox.addEventListener('click', function(event) { 
+                if (event.target === lightbox) { 
+                    closeModal(); 
+                } 
+            });
         });
     </script>
 </body>
