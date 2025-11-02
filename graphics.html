@@ -5,51 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graphic Explorations - Sonaksh Tholia</title>
     <style>
-        /* Import Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Work+Sans:wght@300;400;600&display=swap');
 
-        /* Basic Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Body Styling */
         body {
             background-color: #000;
             color: #fff;
             overflow-x: hidden;
             overflow-y: auto;
             min-height: 100vh;
-            width: 100vw;
-            position: relative;
             font-family: 'Work Sans', sans-serif;
+            padding: 100px 20px 80px;
             cursor: none;
-            padding-top: 100px;
-            padding-bottom: 80px;
-        }
-        body.modal-open {
-            overflow: hidden;
         }
 
-        /* Main Container */
         .page-container {
-            padding: 2rem;
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
             z-index: 10;
-            transition: filter 0.4s ease, opacity 0.4s ease;
-        }
-        .page-content-dimmed {
-            filter: brightness(0.3) grayscale(60%);
-            opacity: 0.5;
-            pointer-events: none;
         }
 
-
-        /* Page Title Styling */
         .page-title {
             font-family: 'Oswald', sans-serif;
             font-size: 4rem;
@@ -59,11 +40,14 @@
             text-transform: uppercase;
             letter-spacing: -1px;
             color: #eee;
-            position: relative;
-            z-index: 5;
         }
 
-        /* Back Link Styling */
+        @media (max-width: 600px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+
         .back-link {
             position: fixed;
             top: 20px;
@@ -82,43 +66,49 @@
             transition: all 0.3s ease;
             cursor: none;
         }
+        
         .back-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
             border-color: #fff;
             transform: scale(1.05);
         }
 
-        /* Masonry Layout using CSS Columns */
         .graphics-masonry-container {
             column-count: 3;
             column-gap: 1.5rem;
             position: relative;
             z-index: 5;
         }
-        @media (max-width: 900px) { .graphics-masonry-container { column-count: 2; } }
-        @media (max-width: 600px) { .graphics-masonry-container { column-count: 1; } }
+        
+        @media (max-width: 900px) { 
+            .graphics-masonry-container { 
+                column-count: 2; 
+            } 
+        }
+        
+        @media (max-width: 600px) { 
+            .graphics-masonry-container { 
+                column-count: 1; 
+            } 
+        }
 
-
-        /* Graphic Item Styling for Masonry */
         .graphic-item {
             background-color: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             overflow: hidden;
-            cursor: pointer;
+            cursor: none;
             margin-bottom: 1.5rem;
             display: inline-block;
             width: 100%;
             break-inside: avoid;
-             /* **** MODIFIED: Added transform and box-shadow to transition **** */
-            transition: transform 0.3s ease, filter 0.4s ease, opacity 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .graphic-item:hover {
-             /* **** MODIFIED: Re-added scale transform **** */
-            transform: scale(1.07); /* Adjust scale factor as desired */
-             /* **** MODIFIED: Added glow effect to box-shadow **** */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 25px 5px rgba(0, 255, 102, 0.4); /* Inner shadow + Outer glow */
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 25px 5px rgba(0, 255, 102, 0.4);
             border-color: rgba(0, 255, 102, 0.6);
             z-index: 15;
         }
@@ -131,38 +121,41 @@
             background-color: #111;
         }
 
-        /* Style for grayscale effect on hover (non-active items) */
-        .grayscale-inactive {
-            filter: grayscale(100%);
-            opacity: 0.4;
-        }
-
-        /* Lightbox Modal Styles */
         .lightbox-modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 2000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             background-color: rgba(0, 0, 0, 0.95);
             justify-content: center;
             align-items: center;
-            cursor: pointer;
+            cursor: none;
         }
+        
+        .lightbox-modal.active {
+            display: flex;
+        }
+        
         .lightbox-content {
             margin: auto;
             display: block;
             max-width: 90%;
             max-height: 90%;
-            cursor: default;
             animation: zoomIn 0.3s ease;
         }
+        
         @keyframes zoomIn {
-            from { transform: scale(0.8); opacity: 0;}
-            to { transform: scale(1); opacity: 1;}
+            from { 
+                transform: scale(0.8); 
+                opacity: 0;
+            }
+            to { 
+                transform: scale(1); 
+                opacity: 1;
+            }
         }
 
         .lightbox-close {
@@ -173,229 +166,119 @@
             font-size: 40px;
             font-weight: bold;
             transition: 0.3s;
-            cursor: pointer;
-            z-index: 1002;
+            cursor: none;
+            z-index: 2001;
         }
-        .lightbox-close:hover,
-        .lightbox-close:focus {
-            color: #bbb;
-            text-decoration: none;
+        
+        .lightbox-close:hover {
+            color: #00ff66;
         }
 
-
-        /* --- Reused Styles for Decorative Elements --- */
-        .decorative-element {
-             position: absolute;
-             z-index: 1;
-             opacity: 0.5;
-             transition: filter 0.4s ease, opacity 0.4s ease;
-             pointer-events: none;
+        .loading-indicator {
+            text-align: center;
+            color: #666;
+            padding: 2rem;
+            font-size: 1.2rem;
         }
-        .gradient-box { /* ... */ }
-        .orange-box { /* ... */ }
-        .cloud { /* ... */ }
-        .cloud1 { /* ... */ }
-        .cloud2 { /* ... */ }
-        .scribble { /* ... */ }
-        .scribble path { /* ... */ }
-        .scribble1 { /* ... */ }
-        .scribble2 { /* ... */ }
-        .white-dot { /* ... */ }
 
-        /* Reused Animations */
-        @keyframes float { /* ... */ }
-        @keyframes pulse { /* ... */ }
-        @keyframes draw { /* ... */ }
+        .error-msg {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
 
-        /* --- Reused Custom Butterfly Cursor Styles --- */
-        .butterfly-cursor { /* ... */ }
-        .butterfly-body { /* ... */ }
-        .butterfly-wing { /* ... */ }
-        /* ... other cursor styles ... */
-        /* Cursor Color States */
-        .invert-cursor .butterfly-body,
-        .invert-cursor .butterfly-wing { background-color: black; mix-blend-mode: difference; }
-        .graphic-hover .butterfly-body,
-        .graphic-hover .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; box-shadow: 0 0 10px #00ff66; }
-        .green-cursor .butterfly-body,
-        .green-cursor .butterfly-wing { background-color: #00ff66; mix-blend-mode: normal; }
-        .orange-cursor .butterfly-body,
-        .orange-cursor .butterfly-wing { background-color: #ff6600; mix-blend-mode: normal; }
-        /* Reused Animation */
-        @keyframes flapWings { /* ... */ }
-
-         /* --- Styles from previous versions (keep for consistency) --- */
-         @keyframes float {
-             0%, 100% { transform: translateY(0); }
-             50% { transform: translateY(-15px); }
-         }
-         @keyframes pulse {
-             0%, 100% { transform: scale(1); opacity: 0.5; box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.3); }
-             50% { transform: scale(1.1); opacity: 0.4; box-shadow: 0 0 12px 6px rgba(255, 255, 255, 0.4); }
-         }
-         @keyframes draw {
-             0% { stroke-dashoffset: 1000; }
-             100% { stroke-dashoffset: 0; }
-         }
-         .butterfly-cursor {
-             position: fixed;
-             width: 40px;
-             height: 40px;
-             pointer-events: none;
-             z-index: 9999;
-             transform-origin: center;
-             transition: transform 0.1s ease;
-         }
-         .butterfly-body {
-             position: absolute;
-             top: 50%;
-             left: 50%;
-             transform: translate(-50%, -50%);
-             width: 6px;
-             height: 16px;
-             background-color: white;
-             border-radius: 50%;
-             z-index: 2;
-             transition: background-color 0.3s ease;
-         }
-         .butterfly-wing {
-             position: absolute;
-             width: 20px;
-             height: 24px;
-             background-color: white;
-             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-             transition: all 0.3s ease;
-             animation: flapWings 0.8s infinite ease-in-out;
-         }
-         .butterfly-wing-left { left: 0; transform-origin: right center; transform: rotate(-20deg); }
-         .butterfly-wing-right { right: 0; transform-origin: left center; transform: rotate(20deg); }
-         .butterfly-wing-left-back { left: 5px; top: 10px; transform: rotate(-40deg); width: 15px; height: 20px; opacity: 0.7; }
-         .butterfly-wing-right-back { right: 5px; top: 10px; transform: rotate(40deg); width: 15px; height: 20px; opacity: 0.7; }
-         @keyframes flapWings {
-             0%, 100% { transform: scaleX(1); }
-             50% { transform: scaleX(0.8); }
-         }
-         .decorative-element {
-              position: absolute;
-              z-index: 1;
-              opacity: 0.5;
-              transition: filter 0.4s ease, opacity 0.4s ease;
-              pointer-events: none;
-         }
-         .gradient-box { top: 10%; left: -5%; width: 150px; height: 150px; background: linear-gradient(to bottom, #00ff66, #003311); border-radius: 10px; }
-         .orange-box { top: 60%; right: -3%; width: 80px; height: 150px; background: linear-gradient(to bottom, #ff6600, #993300); border-radius: 10px; }
-         .cloud { width: 120px; height: 60px; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); opacity: 0.4; animation: float 8s infinite ease-in-out; }
-         .cloud1 { top: 15%; right: 5%; }
-         .cloud2 { top: 70%; left: 5%; animation-delay: 2s;}
-         .scribble { filter: drop-shadow(0 0 3px currentColor); opacity: 0.6; }
-         .scribble path { pointer-events: none; }
-         .scribble1 { top: 50%; left: 2%; stroke: #ff4500; stroke-width: 2; }
-         .scribble2 { top: 20%; right: 1%; stroke: white; stroke-width: 1; transform: scale(0.8); }
-         .white-dot { width: 15px; height: 15px; border-radius: 50%; background-color: white; right: 25%; top: 80%; box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.3); animation: pulse 4s infinite ease-in-out; }
-
-
+        /* Butterfly Cursor Styles */
+        .butterfly-cursor {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            z-index: 9999;
+            transform-origin: center;
+            transition: transform 0.1s ease;
+        }
+        
+        .butterfly-body {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            z-index: 2;
+            transition: background-color 0.2s ease, filter 0.2s ease;
+        }
+        
+        .butterfly-wing {
+            position: absolute;
+            width: 20px;
+            height: 24px;
+            background-color: white;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            transition: background-color 0.2s ease, filter 0.2s ease;
+            animation: flapWings 0.8s infinite ease-in-out;
+        }
+        
+        .butterfly-wing-left { 
+            left: 0; 
+            transform-origin: right center; 
+            transform: rotate(-20deg); 
+        }
+        
+        .butterfly-wing-right { 
+            right: 0; 
+            transform-origin: left center; 
+            transform: rotate(20deg); 
+        }
+        
+        .butterfly-wing-left-back { 
+            left: 5px; 
+            top: 10px; 
+            transform: rotate(-40deg); 
+            width: 15px; 
+            height: 20px; 
+            opacity: 0.7; 
+        }
+        
+        .butterfly-wing-right-back { 
+            right: 5px; 
+            top: 10px; 
+            transform: rotate(40deg); 
+            width: 15px; 
+            height: 20px; 
+            opacity: 0.7; 
+        }
+        
+        @keyframes flapWings {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(0.8); }
+        }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link interactive">← Back to Home</a>
+    <a href="index.html" class="back-link">← Back to Home</a>
 
-    <div class="gradient-box interactive decorative-element"></div>
-    <div class="orange-box interactive decorative-element"></div>
-    <svg class="cloud cloud1 interactive decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
-    <svg class="cloud cloud2 interactive decorative-element" viewBox="0 0 120 60"><path d="M10,40 Q20,20 40,30 Q50,5 70,20 Q90,5 100,25 Q115,15 110,40 Q125,55 90,50 Q80,70 50,50 Q20,70 10,40" fill="none" stroke="white" stroke-width="2" /></svg>
-    <svg class="scribble scribble1 interactive decorative-element" width="200" height="100" viewBox="0 0 200 100"><path d="M10,50 C30,20 50,80 70,30 C90,70 110,20 130,60 C150,30 170,70 190,40" fill="none" stroke="#ff4500" stroke-width="2" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="3s" begin="0s" fill="freeze" /></path></svg>
-    <svg class="scribble scribble2 interactive decorative-element" width="300" height="100" viewBox="0 0 300 100"><path d="M10,50 C50,20 100,80 150,30 C200,70 250,20 290,60" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="4s" begin="1s" fill="freeze" /></path></svg>
-    <div class="white-dot interactive decorative-element"></div>
-
-    <div id="pageContent" class="page-container">
+    <div class="page-container">
         <h1 class="page-title">Graphic Explorations</h1>
+        
+        <div id="loadingMsg" class="loading-indicator">Loading images...</div>
 
-        <div class="graphics-masonry-container">
-            <div class="graphic-item interactive">
-                <img src="https://imgur.com/Ah0bpyk.png" alt="Awakening" onerror="this.onerror=null; this.src='https://placehold.co/400x500/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/6Pg1tlR.png" alt="Brain Damage" onerror="this.onerror=null; this.src='https://placehold.co/400x300/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src=https://imgur.com/SCxTUoi.png" alt="Naked Man Fears No Pickpocket" onerror="this.onerror=null; this.src='https://placehold.co/400x600/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/xo6xKMr.png" alt="White Ferrari" onerror="this.onerror=null; this.src='https://placehold.co/400x400/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/BPRecTV.png" alt="You've Gone Too Far" onerror="this.onerror=null; this.src='https://placehold.co/400x550/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/qAiqGKO.png" alt="Run" onerror="this.onerror=null; this.src='https://placehold.co/400x400/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/qpSCYJV.png" alt="Nights" onerror="this.onerror=null; this.src='https://placehold.co/400x450/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/xS8PcYV.png" alt="TDL Adrien" onerror="this.onerror=null; this.src='https://placehold.co/400x650/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/kr9tB9W.png" alt="Meditate" onerror="this.onerror=null; this.src='https://placehold.co/400x350/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/EuNl9QI.png" alt="Jesse" onerror="this.onerror=null; this.src='https://placehold.co/400x500/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/nIcXK61.png" alt="Nights" onerror="this.onerror=null; this.src='https://placehold.co/400x450/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/KwpLmaS.png" alt="TDL Adrien" onerror="this.onerror=null; this.src='https://placehold.co/400x650/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/azjQtZ1.png" alt="Meditate" onerror="this.onerror=null; this.src='https://placehold.co/400x350/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/8AJOJJP.png" alt="Jesse" onerror="this.onerror=null; this.src='https://placehold.co/400x500/1a1a1a/cccccc?text=Error';">
-             </div>
-       
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/K3skaeY.png" alt="Jesse" onerror="this.onerror=null; this.src='https://placehold.co/400x500/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/HF2g33w.png" alt="Nights" onerror="this.onerror=null; this.src='https://placehold.co/400x450/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/bbqIujP.png" alt="TDL Adrien" onerror="this.onerror=null; this.src='https://placehold.co/400x650/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/7qlIpE8.png" alt="Meditate" onerror="this.onerror=null; this.src='https://placehold.co/400x350/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/vFqeXxf.png" alt="last" onerror="this.onerror=null; this.src='https://placehold.co/400x500/1a1a1a/cccccc?text=Error';">
-             </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/5CfLrwv.png" alt="Jesse" onerror="this.onerror=null; this.src='https://placehold.co/400x500/1a1a1a/cccccc?text=Error';">
-             </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/gWGWJpI.png" alt="Meditate" onerror="this.onerror=null; this.src='https://placehold.co/400x350/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/HQMEt2E.png" alt="Jesse" onerror="this.onerror=null; this.src='https://placehold.co/400x500/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/nAAK7CG.png" alt="Nights" onerror="this.onerror=null; this.src='https://placehold.co/400x450/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/3uCMoGV.png" alt="TDL Adrien" onerror="this.onerror=null; this.src='https://placehold.co/400x650/1a1a1a/cccccc?text=Error';">
-            </div>
-            <div class="graphic-item interactive">
-                 <img src="https://imgur.com/7cDONFI.png" alt="Meditate" onerror="this.onerror=null; this.src='https://placehold.co/400x350/1a1a1a/cccccc?text=Error';">
-            
-            </div>
+        <div class="graphics-masonry-container" id="gallery">
+            <!-- Images will be loaded here -->
         </div>
     </div>
 
     <div id="imageLightbox" class="lightbox-modal">
         <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightboxImage">
+        <img class="lightbox-content" id="lightboxImage" alt="Full size image">
     </div>
 
+    <!-- Butterfly Cursor -->
     <div class="butterfly-cursor">
         <div class="butterfly-wing butterfly-wing-left"></div>
         <div class="butterfly-wing butterfly-wing-right"></div>
@@ -404,153 +287,269 @@
         <div class="butterfly-body"></div>
     </div>
 
+    <!-- Hidden canvas for color sampling -->
+    <canvas id="colorCanvas" style="display: none;"></canvas>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Image URLs - using direct Imgur links
+        const imageData = [
+            { src: "https://i.imgur.com/Ah0bpyk.png", alt: "Awakening" },
+            { src: "https://i.imgur.com/6Pg1tlR.png", alt: "Brain Damage" },
+            { src: "https://i.imgur.com/SCxTUoi.png", alt: "Naked Man Fears No Pickpocket" },
+            { src: "https://i.imgur.com/xo6xKMr.png", alt: "White Ferrari" },
+            { src: "https://i.imgur.com/BPRecTV.png", alt: "You've Gone Too Far" },
+            { src: "https://i.imgur.com/qAiqGKO.png", alt: "Run" },
+            { src: "https://i.imgur.com/qpSCYJV.png", alt: "Nights" },
+            { src: "https://i.imgur.com/xS8PcYV.png", alt: "TDL Adrien" },
+            { src: "https://i.imgur.com/kr9tB9W.png", alt: "Meditate" },
+            { src: "https://i.imgur.com/EuNl9QI.png", alt: "Jesse" },
+            { src: "https://i.imgur.com/nIcXK61.png", alt: "Nights 2" },
+            { src: "https://i.imgur.com/KwpLmaS.png", alt: "TDL Adrien 2" },
+            { src: "https://i.imgur.com/azjQtZ1.png", alt: "Meditate 2" },
+            { src: "https://i.imgur.com/8AJOJJP.png", alt: "Jesse 2" },
+            { src: "https://i.imgur.com/K3skaeY.png", alt: "Jesse 3" },
+            { src: "https://i.imgur.com/HF2g33w.png", alt: "Nights 3" },
+            { src: "https://i.imgur.com/bbqIujP.png", alt: "TDL Adrien 3" },
+            { src: "https://i.imgur.com/7qlIpE8.png", alt: "Meditate 3" },
+            { src: "https://i.imgur.com/vFqeXxf.png", alt: "Last" },
+            { src: "https://i.imgur.com/5CfLrwv.png", alt: "Jesse 4" },
+            { src: "https://i.imgur.com/gWGWJpI.png", alt: "Meditate 4" },
+            { src: "https://i.imgur.com/HQMEt2E.png", alt: "Jesse 5" },
+            { src: "https://i.imgur.com/nAAK7CG.png", alt: "Nights 4" },
+            { src: "https://i.imgur.com/3uCMoGV.png", alt: "TDL Adrien 4" },
+            { src: "https://i.imgur.com/7cDONFI.png", alt: "Meditate 5" },
+            { src: "https://i.postimg.cc/9QQ2VjFT/Artboard-1.png", alt: "Artboard 1" },
+            { src: "https://i.postimg.cc/CxQ3gB2V/Artboard-22.png", alt: "Artboard 22" },
+            { src: "https://i.postimg.cc/bNzcHjnR/Artboard-3.png", alt: "Artboard 3" },
+            { src: "https://i.postimg.cc/WzTKnMdb/dont-be-a-stranger.png", alt: "Don't Be A Stranger" },
+            { src: "https://i.postimg.cc/15R2Vrxv/mr-tottenham.png", alt: "Mr Tottenham" }
+        ];
 
-            // --- Butterfly Cursor Logic (Reused) ---
-            const butterflyCursor = document.querySelector('.butterfly-cursor');
-            const butterflyWings = document.querySelectorAll('.butterfly-wing');
-             let lastMouseX = 0;
-             let lastMouseY = 0;
-             let angle = 90;
-             function updateButterflyPosition(e) { /* ... same as before ... */
-                 const mouseX = e.clientX;
-                 const mouseY = e.clientY;
-                 requestAnimationFrame(() => {
-                     butterflyCursor.style.left = `${mouseX - butterflyCursor.offsetWidth / 2}px`;
-                     butterflyCursor.style.top = `${mouseY - butterflyCursor.offsetHeight / 2}px`;
-                     const dx = mouseX - lastMouseX;
-                     const dy = mouseY - lastMouseY;
-                     if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-                         angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
-                     }
-                     butterflyCursor.style.transform = `rotate(${angle}deg)`;
-                     lastMouseX = mouseX;
-                     lastMouseY = mouseY;
-                 });
-                 const elementUnderCursor = document.elementFromPoint(mouseX, mouseY);
-                 butterflyCursor.classList.remove('invert-cursor', 'graphic-hover', 'green-cursor', 'orange-cursor');
-                 if (elementUnderCursor) {
-                     if (elementUnderCursor.closest('.graphic-item')) {
-                         butterflyCursor.classList.add('graphic-hover');
-                     } else if (elementUnderCursor.closest('.gradient-box')) {
-                          butterflyCursor.classList.add('green-cursor');
-                     } else if (elementUnderCursor.closest('.orange-box')) {
-                          butterflyCursor.classList.add('orange-cursor');
-                     } else if (elementUnderCursor.closest('.interactive')) {
-                         butterflyCursor.classList.add('invert-cursor');
-                     }
-                 }
-             }
-             document.addEventListener('mousemove', updateButterflyPosition);
+        const gallery = document.getElementById('gallery');
+        const lightbox = document.getElementById('imageLightbox');
+        const lightboxImg = document.getElementById('lightboxImage');
+        const closeBtn = document.querySelector('.lightbox-close');
+        const loadingMsg = document.getElementById('loadingMsg');
+        
+        let loadedCount = 0;
+        let errorCount = 0;
 
-            // --- Butterfly Wings Flapping Speed (Reused) ---
-             let isMoving = false;
-             let moveTimeout;
-             document.addEventListener('mousemove', function() { /* ... same as before ... */
-                 isMoving = true;
-                 butterflyWings.forEach(wing => { wing.style.animationDuration = '0.3s'; });
-                 clearTimeout(moveTimeout);
-                 moveTimeout = setTimeout(() => {
-                     isMoving = false;
-                     butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
-                 }, 150);
-             });
-             butterflyWings.forEach(wing => { wing.style.animationDuration = '0.8s'; });
-
-            // --- Add interactive class to necessary elements ---
-            document.querySelectorAll('.back-link, .graphic-item, .gradient-box, .orange-box, .cloud, .scribble, .white-dot').forEach(el => {
-                el.classList.add('interactive');
+        // Load images
+        imageData.forEach((imgData, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'graphic-item';
+            
+            const img = document.createElement('img');
+            img.alt = imgData.alt;
+            img.crossOrigin = 'anonymous';
+            
+            img.onload = () => {
+                loadedCount++;
+                checkLoadingComplete();
+            };
+            
+            img.onerror = () => {
+                errorCount++;
+                img.src = `https://placehold.co/400x500/1a1a1a/cccccc?text=${encodeURIComponent('Image ' + (index + 1))}`;
+                checkLoadingComplete();
+            };
+            
+            img.src = imgData.src;
+            
+            itemDiv.appendChild(img);
+            gallery.appendChild(itemDiv);
+            
+            // Click handler for lightbox
+            itemDiv.addEventListener('click', () => {
+                lightbox.classList.add('active');
+                lightboxImg.src = img.src;
             });
+        });
 
-            // --- Grayscale Hover Effect Logic ---
-            const graphicItems = document.querySelectorAll('.graphic-item');
-            const decorativeElements = document.querySelectorAll('.decorative-element');
-            const pageContent = document.getElementById('pageContent');
-            const lightbox = document.getElementById('imageLightbox'); // Get lightbox reference here
+        function checkLoadingComplete() {
+            if (loadedCount + errorCount === imageData.length) {
+                loadingMsg.style.display = 'none';
+                if (errorCount > 0) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-msg';
+                    errorDiv.textContent = `Note: ${errorCount} image(s) failed to load and show placeholders`;
+                    gallery.parentNode.insertBefore(errorDiv, gallery);
+                }
+            }
+        }
 
-            graphicItems.forEach(item => {
-                 item.style.cursor = 'pointer';
+        // Close lightbox
+        closeBtn.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
 
-                item.addEventListener('mouseenter', () => {
-                    // Only apply grayscale if lightbox isn't open
-                    if (lightbox.style.display !== 'flex') {
-                        graphicItems.forEach(otherItem => {
-                            if (otherItem !== item) {
-                                otherItem.classList.add('grayscale-inactive');
-                            } else {
-                                otherItem.classList.remove('grayscale-inactive');
-                            }
-                        });
-                        decorativeElements.forEach(decor => {
-                            decor.classList.add('grayscale-inactive');
-                        });
-                    }
-                });
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+            }
+        });
 
-                item.addEventListener('mouseleave', () => {
-                     // Only remove grayscale if lightbox isn't open
-                     if (lightbox.style.display !== 'flex') {
-                        graphicItems.forEach(otherItem => {
-                            otherItem.classList.remove('grayscale-inactive');
-                        });
-                        decorativeElements.forEach(decor => {
-                            decor.classList.remove('grayscale-inactive');
-                        });
-                    }
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+            }
+        });
+
+        // === BUTTERFLY CURSOR LOGIC ===
+        const butterflyCursor = document.querySelector('.butterfly-cursor');
+        const butterflyBody = document.querySelector('.butterfly-body');
+        const butterflyWings = document.querySelectorAll('.butterfly-wing');
+        const colorCanvas = document.getElementById('colorCanvas');
+        const ctx = colorCanvas.getContext('2d', { willReadFrequently: true });
+        
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let angle = 90;
+
+        // Sample color from element under cursor
+        function getColorUnderCursor(x, y) {
+            const element = document.elementFromPoint(x, y);
+            
+            if (!element) return 'rgb(255, 255, 255)';
+            
+            // Check if hovering over an image
+            if (element.tagName === 'IMG' && element.complete) {
+                try {
+                    // Get image dimensions and position
+                    const rect = element.getBoundingClientRect();
+                    const imgX = x - rect.left;
+                    const imgY = y - rect.top;
+                    
+                    // Scale to actual image size
+                    const scaleX = element.naturalWidth / rect.width;
+                    const scaleY = element.naturalHeight / rect.height;
+                    
+                    // Draw a small section of the image to canvas
+                    colorCanvas.width = 1;
+                    colorCanvas.height = 1;
+                    ctx.drawImage(
+                        element, 
+                        imgX * scaleX, imgY * scaleY, 1, 1,
+                        0, 0, 1, 1
+                    );
+                    
+                    // Get pixel color
+                    const pixel = ctx.getImageData(0, 0, 1, 1).data;
+                    return `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+                } catch (e) {
+                    // CORS error or other issue - fall back to computed style
+                    return getComputedColor(element);
+                }
+            }
+            
+            return getComputedColor(element);
+        }
+
+        function getComputedColor(element) {
+            const styles = window.getComputedStyle(element);
+            const bgColor = styles.backgroundColor;
+            const color = styles.color;
+            
+            // Prefer background color, fall back to text color
+            if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+                return bgColor;
+            }
+            return color || 'rgb(255, 255, 255)';
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+
+            return [h * 360, s * 100, l * 100];
+        }
+
+        function getContrastColor(rgbString) {
+            const match = rgbString.match(/\d+/g);
+            if (!match) return 'rgb(255, 255, 255)';
+            
+            const [r, g, b] = match.map(Number);
+            const [h, s, l] = rgbToHsl(r, g, b);
+            
+            // If very dark, use white or bright color
+            if (l < 30) {
+                return `hsl(${h}, ${Math.max(s, 70)}%, 85%)`;
+            }
+            // If very light, use dark or saturated version
+            if (l > 70) {
+                return `hsl(${h}, ${Math.max(s, 70)}%, 25%)`;
+            }
+            // Otherwise, shift hue and adjust saturation/lightness
+            const newH = (h + 180) % 360;
+            return `hsl(${newH}, ${Math.min(s * 1.5, 100)}%, ${l > 50 ? 30 : 70}%)`;
+        }
+
+        function updateButterflyPosition(e) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            requestAnimationFrame(() => {
+                butterflyCursor.style.left = `${mouseX - butterflyCursor.offsetWidth / 2}px`;
+                butterflyCursor.style.top = `${mouseY - butterflyCursor.offsetHeight / 2}px`;
+                
+                const dx = mouseX - lastMouseX;
+                const dy = mouseY - lastMouseY;
+                
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                    angle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+                }
+                
+                butterflyCursor.style.transform = `rotate(${angle}deg)`;
+                lastMouseX = mouseX;
+                lastMouseY = mouseY;
+                
+                // Get color under cursor and apply contrast color
+                const color = getColorUnderCursor(mouseX, mouseY);
+                const contrastColor = getContrastColor(color);
+                
+                butterflyBody.style.backgroundColor = contrastColor;
+                butterflyWings.forEach(wing => {
+                    wing.style.backgroundColor = contrastColor;
                 });
             });
+        }
 
+        document.addEventListener('mousemove', updateButterflyPosition);
 
-             // --- Lightbox Modal Logic ---
-             // const lightbox = document.getElementById('imageLightbox'); // Already defined above
-             const lightboxImg = document.getElementById('lightboxImage');
-             const closeBtn = document.querySelector('.lightbox-close');
-
-             graphicItems.forEach(item => {
-                 item.addEventListener('click', () => {
-                     const imgElement = item.querySelector('img');
-                     if (imgElement && imgElement.src && !imgElement.src.includes('text=Error')) {
-                            lightbox.style.display = "flex";
-                            lightboxImg.src = imgElement.src;
-                            document.body.classList.add('modal-open');
-                            pageContent.classList.add('page-content-dimmed');
-
-                            // Remove grayscale from all items when lightbox opens
-                            graphicItems.forEach(i => i.classList.remove('grayscale-inactive'));
-                            decorativeElements.forEach(d => d.classList.remove('grayscale-inactive'));
-                     }
-                 });
-             });
-
-             // Function to close the modal
-             function closeModal() {
-                 lightbox.style.display = "none";
-                 document.body.classList.remove('modal-open');
-                 pageContent.classList.remove('page-content-dimmed');
-             }
-
-             closeBtn.addEventListener('click', closeModal);
-             lightbox.addEventListener('click', function(event) {
-                 if (event.target === lightbox) {
-                     closeModal();
-                 }
-             });
-
-
-             // --- Periodic Animation Reset (Scribbles - Reused) ---
-            const scribbleAnims = document.querySelectorAll('.scribble path animate');
-             if (scribbleAnims.length > 0) { /* ... same as before ... */
-                 setInterval(() => {
-                     scribbleAnims.forEach(anim => {
-                         try {
-                             anim.beginElement();
-                         } catch (error) {
-                             console.warn("Could not restart SVG animation:", error);
-                         }
-                     });
-                 }, 7000);
-             }
+        // Wing flapping speed based on movement
+        let isMoving = false;
+        let moveTimeout;
+        
+        document.addEventListener('mousemove', function() {
+            isMoving = true;
+            butterflyWings.forEach(wing => { 
+                wing.style.animationDuration = '0.3s'; 
+            });
+            
+            clearTimeout(moveTimeout);
+            moveTimeout = setTimeout(() => {
+                isMoving = false;
+                butterflyWings.forEach(wing => { 
+                    wing.style.animationDuration = '0.8s'; 
+                });
+            }, 150);
         });
     </script>
 </body>
