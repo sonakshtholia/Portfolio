@@ -291,40 +291,43 @@
     <canvas id="colorCanvas" style="display: none;"></canvas>
 
     <script>
-        // Image URLs - using direct GitHub raw links
-        const imageData = [
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/AOT.jpeg", alt: "AOT" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/BRAINDAMAGE.jpeg", alt: "Brain Damage" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/DOJAFINALFRR.jpg", alt: "Doja Poster" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/FIGHTCLUB.jpg", alt: "Fight Club" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/HMKOT.jpeg", alt: "HMKOT" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/JESSEposte.jpeg", alt: "Jesse" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/JOKER.jpg", alt: "Joker" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/KROO.jpeg", alt: "Kroos" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/KROOS2.jpeg", alt: "Kroos 2" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/LM1.jpeg", alt: "Messi" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/RADIOHEA.jpeg", alt: "Radiohead" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/YE.jpeg", alt: "Ye" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/awakenin.jpeg", alt: "Awakening" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/beautifu.jpeg", alt: "Beautiful" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/catsu.jpeg", alt: "Cats" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/close.jpeg", alt: "Closer" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/dune.jpeg", alt: "Dune" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/eternalsunshine.jpeg", alt: "Eternal Sunshine" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/focussedate.jpeg", alt: "Focus Date" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/franklas.jpeg", alt: "Frank" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/jess.jpeg", alt: "Jess" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/krooo.jpeg", alt: "Kroos Alt" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/lover.png", alt: "Lover" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/marrybook.jpeg", alt: "Marriage Book" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/meditate.jpeg", alt: "Meditate" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/night.jpeg", alt: "Night" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/ru.jpeg", alt: "Ru" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/tdladrie.jpeg", alt: "TDL Adrie" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/thenakedmanfearsnopickpoke.jpeg", alt: "The Naked Man Fears No Pickpocket" },
-            { src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/virat.jpeg", alt: "Virat" }
-        ];
+        // Image URLs - using direct Imgur links
+   const imageData = [
 
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/AOT.jpeg", alt: "AOT" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/BRAINDAMAGE.jpeg", alt: "Brain Damage" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/DOJAFINALFRR.jpg", alt: "Doja Poster" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/FIGHTCLUB.jpg", alt: "Fight Club" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/HMKOT.jpeg", alt: "HMKOT" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/JESSEposte.jpeg", alt: "Jesse" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/JOKER.jpg", alt: "Joker" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/KROO.jpeg", alt: "Kroos" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/KROOS2.jpeg", alt: "Kroos 2" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/LM1.jpeg", alt: "Messi" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/RADIOHEA.jpeg", alt: "Radiohead" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/YE.jpeg", alt: "Ye" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/awakenin.jpeg", alt: "Awakening" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/beautifu.jpeg", alt: "Beautiful" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/catsu.jpeg", alt: "Cats" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/close.jpeg", alt: "Closer" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/dune.jpeg", alt: "Dune" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/eternalsunshine.jpeg", alt: "Eternal Sunshine" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/focussedate.jpeg", alt: "Focus Date" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/franklas.jpeg", alt: "Frank" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/jess.jpeg", alt: "Jess" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/krooo.jpeg", alt: "Kroos Alt" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/lover.png", alt: "Lover" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/marrybook.jpeg", alt: "Marriage Book" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/meditate.jpeg", alt: "Meditate" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/night.jpeg", alt: "Night" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/ru.jpeg", alt: "Ru" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/tdladrie.jpeg", alt: "TDL Adrie" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/thenakedmanfearsnopickpoke.jpeg", alt: "The Naked Man Fears No Pickpocket" },
+{ src: "https://raw.githubusercontent.com/sonakshtholia/imagesportfolio/main/virat.jpeg", alt: "Virat" }
+
+];
+      
+      ];
         const gallery = document.getElementById('gallery');
         const lightbox = document.getElementById('imageLightbox');
         const lightboxImg = document.getElementById('lightboxImage');
@@ -407,20 +410,25 @@
         let lastMouseY = 0;
         let angle = 90;
 
+        // Sample color from element under cursor
         function getColorUnderCursor(x, y) {
             const element = document.elementFromPoint(x, y);
             
             if (!element) return 'rgb(255, 255, 255)';
             
+            // Check if hovering over an image
             if (element.tagName === 'IMG' && element.complete) {
                 try {
+                    // Get image dimensions and position
                     const rect = element.getBoundingClientRect();
                     const imgX = x - rect.left;
                     const imgY = y - rect.top;
                     
+                    // Scale to actual image size
                     const scaleX = element.naturalWidth / rect.width;
                     const scaleY = element.naturalHeight / rect.height;
                     
+                    // Draw a small section of the image to canvas
                     colorCanvas.width = 1;
                     colorCanvas.height = 1;
                     ctx.drawImage(
@@ -429,9 +437,11 @@
                         0, 0, 1, 1
                     );
                     
+                    // Get pixel color
                     const pixel = ctx.getImageData(0, 0, 1, 1).data;
                     return `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
                 } catch (e) {
+                    // CORS error or other issue - fall back to computed style
                     return getComputedColor(element);
                 }
             }
@@ -444,6 +454,7 @@
             const bgColor = styles.backgroundColor;
             const color = styles.color;
             
+            // Prefer background color, fall back to text color
             if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
                 return bgColor;
             }
@@ -480,12 +491,15 @@
             const [r, g, b] = match.map(Number);
             const [h, s, l] = rgbToHsl(r, g, b);
             
+            // If very dark, use white or bright color
             if (l < 30) {
                 return `hsl(${h}, ${Math.max(s, 70)}%, 85%)`;
             }
+            // If very light, use dark or saturated version
             if (l > 70) {
                 return `hsl(${h}, ${Math.max(s, 70)}%, 25%)`;
             }
+            // Otherwise, shift hue and adjust saturation/lightness
             const newH = (h + 180) % 360;
             return `hsl(${newH}, ${Math.min(s * 1.5, 100)}%, ${l > 50 ? 30 : 70}%)`;
         }
@@ -509,6 +523,7 @@
                 lastMouseX = mouseX;
                 lastMouseY = mouseY;
                 
+                // Get color under cursor and apply contrast color
                 const color = getColorUnderCursor(mouseX, mouseY);
                 const contrastColor = getContrastColor(color);
                 
@@ -522,15 +537,18 @@
         document.addEventListener('mousemove', updateButterflyPosition);
 
         // Wing flapping speed based on movement
+        let isMoving = false;
         let moveTimeout;
         
         document.addEventListener('mousemove', function() {
+            isMoving = true;
             butterflyWings.forEach(wing => { 
                 wing.style.animationDuration = '0.3s'; 
             });
             
             clearTimeout(moveTimeout);
             moveTimeout = setTimeout(() => {
+                isMoving = false;
                 butterflyWings.forEach(wing => { 
                     wing.style.animationDuration = '0.8s'; 
                 });
@@ -539,3 +557,6 @@
     </script>
 </body>
 </html>
+
+
+
